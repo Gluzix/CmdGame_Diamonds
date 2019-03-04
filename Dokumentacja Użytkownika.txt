@@ -1,0 +1,10 @@
+Gra Diamonds polega na zebraniu wszystkich diamentów oraz na wydostaniu siê z danej mapy, przed zderzeniem z jakimkolwiek Wrogiem
+Spis Wrogów:
+^ - Szybki wróg, gdy wykryje gracza, bêdzie usi³owa³ go zabiæ.
+& - Wolny wróg, gdy wykryje gracza, bêdzie usi³owa³ go zabiæ.
+Spis Elementów Mapy:
+* - Diamenty które musimy zebraæ.
+# - Œciany, ktorych nie mozemy przekroczyc.
+$ - Bariera, ktora trzeba otworzyc za pomoc¹ prze³¹cznika.
+S - Prze³¹cznik
+OUT - Wyjœcie z mapy.
