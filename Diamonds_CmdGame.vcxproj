@@ -142,6 +142,7 @@
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="faster_enemy.cpp" />
     <ClCompile Include="fast_enem.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="player.cpp" />
@@ -160,6 +161,8 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="Map.txt" />
+    <Text Include="Start.txt" />
+    <Text Include="Win.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

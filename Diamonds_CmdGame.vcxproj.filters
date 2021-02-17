@@ -39,6 +39,7 @@
     <ClCompile Include="slow_enem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="enemy.h">
@@ -68,5 +69,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="Map.txt" />
+    <Text Include="Start.txt" />
+    <Text Include="Win.txt" />
   </ItemGroup>
 </Project>
