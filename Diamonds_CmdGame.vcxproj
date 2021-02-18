@@ -88,6 +88,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>$(ProjectDir)/header</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -116,6 +118,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>$(ProjectDir)/header</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -139,30 +143,31 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="enemy.cpp" />
-    <ClCompile Include="faster_enemy.cpp" />
-    <ClCompile Include="fast_enem.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Map.cpp" />
-    <ClCompile Include="Menu.cpp" />
-    <ClCompile Include="player.cpp" />
-    <ClCompile Include="punctation.cpp" />
-    <ClCompile Include="slow_enem.cpp" />
+    <ClCompile Include="source\Enemy.cpp" />
+    <ClCompile Include="source\FastEnemy.cpp" />
+    <ClCompile Include="source\FastestEnemy.cpp" />
+    <ClCompile Include="source\Map.cpp" />
+    <ClCompile Include="source\Menu.cpp" />
+    <ClCompile Include="source\Player.cpp" />
+    <ClCompile Include="source\Punctation.cpp" />
+    <ClCompile Include="source\SlowEnemy.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="enemy.h" />
-    <ClInclude Include="faster_enemy.h" />
-    <ClInclude Include="fast_enem.h" />
-    <ClInclude Include="Map.h" />
-    <ClInclude Include="Menu.h" />
-    <ClInclude Include="player.h" />
-    <ClInclude Include="punctation.h" />
-    <ClInclude Include="slow_enem.h" />
+    <ClInclude Include="header\Enemy.h" />
+    <ClInclude Include="header\FastEnemy.h" />
+    <ClInclude Include="header\FastestEnemy.h" />
+    <ClInclude Include="header\Map.h" />
+    <ClInclude Include="header\Menu.h" />
+    <ClInclude Include="header\Player.h" />
+    <ClInclude Include="header\Punctation.h" />
+    <ClInclude Include="header\SlowEnemy.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Map.txt" />
-    <Text Include="Start.txt" />
-    <Text Include="Win.txt" />
+    <Text Include="resources\Loose.txt" />
+    <Text Include="resources\Map.txt" />
+    <Text Include="resources\Start.txt" />
+    <Text Include="resources\Win.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
