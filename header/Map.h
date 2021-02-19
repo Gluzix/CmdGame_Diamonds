@@ -1,5 +1,3 @@
-#ifndef MAP_H
-#define MAP_H
 #include <string>
 #include <string.h>
 #include <stdlib.h>
@@ -73,4 +71,3 @@ class Map
         bool check_if_player_got_out(int, int);
         void delete_barrier();
 };
-#endif // MAP_H

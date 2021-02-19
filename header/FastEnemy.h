@@ -1,3 +1,6 @@
+#ifndef FAST_ENEMY
+#define FAST_ENEMY
+
 #include "Enemy.h"
 
 class FastEnemy : public Enemy
@@ -22,3 +25,5 @@ private:
     int m_whoUsedRound;
     int m_coordination;
 };
+
+#endif

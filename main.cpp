@@ -5,12 +5,13 @@
 #include <windows.h>
 #include <windowsx.h>
 #include <conio.h>
+#include <time.h>
+#include <vector>
 #include "Menu.h"
 #include "Map.h"
-#include "enemy.h"
-#include "player.h"
-#include <time.h>
-#include "faster_enemy.h"
+#include "Player.h"
+#include "FastEnemy.h"
+#include "SlowEnemy.h"
 
 using namespace std;
 
@@ -29,7 +30,7 @@ int check_height(const char *str)
     }
     else
     {
-        while(fscanf(plik, "%c", &buforek)!=EOF)
+        while(fscanf_s(plik, "%c", &buforek)!=EOF)
         {
             width++;
             if(buforek=='\n')
@@ -56,7 +57,7 @@ int check_width(const char *str)
     }
     else
     {
-        while(fscanf(plik, "%c", &buforek)!=EOF)
+        while(fscanf_s(plik, "%c", &buforek)!=EOF)
         {
             width++;
             if(buforek=='\n')
@@ -73,9 +74,9 @@ int main()
 {
     srand( time( NULL ) );
     int x=0;
-    Menu m1(check_width("Start.txt"), check_height("Start.txt"), "Start.txt");
+    Menu m1(check_width("resources/Start.txt"), check_height("resources/Start.txt"), "resources/Start.txt");
     m1.create_menu();
-    Map mp1(check_width("Level_one/Map.txt"), check_height("Level_one/Map.txt"), "Level_one/Map.txt");
+    Map mp1(check_width("resources/Map.txt"), check_height("resources/Map.txt"), "resources/Map.txt");
     mp1.create_map();
 
     while(1)
@@ -104,72 +105,69 @@ int main()
             if(x==0)
             {
                 mp1.show_map();
-                enemy e1(mp1.return_pos_x(0), mp1.return_pos_y(0), 3, 0, 8);
-                enemy e2(mp1.return_pos_x(1), mp1.return_pos_y(1), 4, 0, 4);
-                enemy e3(mp1.return_pos_x(2), mp1.return_pos_y(2), 5, 0, 8);
-                enemy e4(mp1.return_pos_x(3), mp1.return_pos_y(3), 6, 0, 4);
 
-                enemy e5(mp1.return_pos_x(4), mp1.return_pos_y(4), -50, 1, 8);
-                enemy e6(mp1.return_pos_x(5), mp1.return_pos_y(5), 15, 0, 9);
-                enemy e7(mp1.return_pos_x(6), mp1.return_pos_y(6), -48, 1, 8);
-                enemy e8(mp1.return_pos_x(7), mp1.return_pos_y(7), 17, 0, 9);
-                enemy e9(mp1.return_pos_x(8), mp1.return_pos_y(8), 19, 0, 9);
+                std::vector<Enemy*> container;
 
-                faster_enemy fe1(mp1.return_faster_pos_x(0), mp1.return_faster_pos_y(0), 12, 0, 11);
-                faster_enemy fe2(mp1.return_faster_pos_x(1), mp1.return_faster_pos_y(1), 12, 0, 11);
-                faster_enemy fe3(mp1.return_faster_pos_x(2), mp1.return_faster_pos_y(2), 12, 0, 11);
-                faster_enemy fe4(mp1.return_faster_pos_x(3), mp1.return_faster_pos_y(3), 12, 0, 11);
-                faster_enemy fe5(mp1.return_faster_pos_x(4), mp1.return_faster_pos_y(4), 12, 0, 11);
-                faster_enemy fe6(mp1.return_faster_pos_x(5), mp1.return_faster_pos_y(5), 12, 0, 11);
+                //for (int i = 0; i < 14; i++)
+                //{
+                //    container.push_back(SlowEnemy(mp1.return_slow_enem_pos_x(i), mp1.return_slow_enem_pos_y(i)));
+                //}
 
-                faster_enemy fe7(mp1.return_faster_pos_x(6), mp1.return_faster_pos_y(6), 24, 0, 4);
-                faster_enemy fe8(mp1.return_faster_pos_x(7), mp1.return_faster_pos_y(7), 24, 0, 4);
-                faster_enemy fe9(mp1.return_faster_pos_x(8), mp1.return_faster_pos_y(8), 24, 0, 4);
+                for (int i = 0; i < 5; i++)
+                {
+                    container.push_back(new FastEnemy(mp1.return_faster_enem_pos_x(i), mp1.return_faster_enem_pos_y(i)));
+                }
 
                 while(1)
                 {
-                    Sleep(10);
-                    e1.update_pos();
-                    e1.try_update_pos();
-                    Sleep(10);
-                    e2.update_pos();
-                    e2.try_update_pos();
-                    e3.update_pos();
-                    e3.try_update_pos();
-                    Sleep(10);
-                    e4.update_pos();
-                    e4.try_update_pos();
-                    fe1.update_pos();
-                    fe1.try_update_pos();
-                    fe2.update_pos();
-                    fe2.try_update_pos();
-                    fe3.update_pos();
-                    Sleep(10);
-                    fe3.try_update_pos();
-                    fe4.update_pos();
-                    fe4.try_update_pos();
-                    fe5.update_pos();
-                    fe5.try_update_pos();
-                    fe6.update_pos();
-                    fe6.try_update_pos();
-                    e5.update_pos();
-                    e5.try_update_pos();
-                    Sleep(10);
-                    e6.update_pos();
-                    e6.try_update_pos();
-                    e7.update_pos();
-                    e7.try_update_pos();
-                    e8.update_pos();
-                    e8.try_update_pos();
-                    e9.update_pos();
-                    e9.try_update_pos();
-                    fe7.update_pos();
-                    fe7.try_update_pos();
-                    Sleep(10);
-                    fe8.update_pos();
-                    fe8.try_update_pos();
-                    fe9.update_pos();
-                    fe9.try_update_pos();
+                    for (int i = 0; i < 5; i++)
+                    {
+                        ((FastEnemy*)container[i])->UpdatePosition();
+                        while (!mp1.check_if_obstacle_for_fast_enem(((FastEnemy*)container[i])->GetX(), ((FastEnemy*)container[i])->GetY(), i) ||
+                            !mp1.check_if_faster_enem_meet_enem(((FastEnemy*)container[i])->GetX(), ((FastEnemy*)container[i])->GetY(), i))
+                        {
+                            ((FastEnemy*)container[i])->BackToOldPosition();
+                            ((FastEnemy*)container[i])->UpdatePosition();
+                        }
+                        ((FastEnemy*)container[i])->UpdateConsoleCoordinates();
+                    }
+                    Sleep(3);
+                    //Sleep(1);
+                    //for (int i = 14; i < 20; i++)
+                    //{
+                    //    container[i].UpdatePosition();
+                    //    while (!mp1.check_if_obstacle_for_fast_enem(container[i].GetX(), container[i].GetY(), i) ||
+                    //        !mp1.check_if_faster_enem_meet_enem(container[i].GetX(), container[i].GetY(), i))
+                    //    {
+                    //        container[i].BackToOldPosition();
+                    //        container[i].UpdatePosition();
+                    //    }
+                    //    container[i].UpdateConsoleCoordinates();
+                    //}
+                    //Sleep(1);
+                    //for (int i = 14; i < 20; i++)
+                    //{
+                    //    container[i].UpdatePosition();
+                    //    while (!mp1.check_if_obstacle_for_fast_enem(container[i].GetX(), container[i].GetY(), i) ||
+                    //        !mp1.check_if_faster_enem_meet_enem(container[i].GetX(), container[i].GetY(), i))
+                    //    {
+                    //        container[i].BackToOldPosition();
+                    //        container[i].UpdatePosition();
+                    //    }
+                    //    container[i].UpdateConsoleCoordinates();
+                    //}
+                    //Sleep(1);
+                    //for (int i = 0; i < 14; i++)
+                    //{
+                    //    container[i].UpdatePosition();
+                    //    while (!mp1.check_if_obstacle_for_slow_enem(container[i].GetX(), container[i].GetY(), i) ||
+                    //        !mp1.check_if_slow_enem_meet_enem(container[i].GetX(), container[i].GetY(), i))
+                    //    {
+                    //        container[i].BackToOldPosition();
+                    //        container[i].UpdatePosition();
+                    //    }
+                    //    container[i].UpdateConsoleCoordinates();
+                    //}
                 }
             }
             else if(x==1)

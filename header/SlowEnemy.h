@@ -1,3 +1,6 @@
+#ifndef SLOW_ENEMY
+#define SLOW_ENEMY
+
 #include "Enemy.h"
 
 class SlowEnemy : public Enemy
@@ -7,10 +10,12 @@ class SlowEnemy : public Enemy
     public:
         SlowEnemy(int x, int y):pos_x(x), pos_y(y), old_pos_x(x), old_pos_y(y), way(0), round(0), disparity_x(0), disparity_y(0),decision(false), who_used_round(0), x_or_y(0){};
         ~SlowEnemy(){};
-        virtual void update_pos();
-        virtual void try_update_pos();
-        virtual void return_to_old_pos();
-        virtual bool check_if_player_is_near(int, int);
-        virtual int return_pos_x();
-        virtual int return_pos_y();
+        virtual void UpdatePosition();
+        virtual void UpdateConsoleCoordinates();
+        virtual void BackToOldPosition();
+        virtual bool IsPlayerNear(int, int);
+        virtual int GetX();
+        virtual int GetY();
 };
+
+#endif

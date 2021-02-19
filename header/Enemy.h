@@ -1,17 +1,17 @@
-#include <string>
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
+#ifndef ENEMY
+#define ENEMY
 
 class Enemy
 {
 public:
     Enemy();
     virtual ~Enemy();
-    virtual void UpdatePosition();
-    virtual void UpdateConsoleCoordinates();
-    virtual void BackToOldPosition();
-    virtual bool IsPlayerNear(int, int);
-    virtual int GetX();
-    virtual int GetY();
+    virtual void UpdatePosition() = 0;
+    virtual void UpdateConsoleCoordinates() = 0;
+    virtual void BackToOldPosition() = 0;
+    virtual bool IsPlayerNear(int, int) = 0;
+    virtual int GetX() = 0;
+    virtual int GetY() = 0;
 };
+
+#endif
