@@ -1,3 +1,0 @@
-Diamonds is a simple game where u have to collect all diamonds
-to open the gate and switch the lever!
-Good luck!

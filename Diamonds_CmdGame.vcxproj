@@ -29,26 +29,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -88,6 +88,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>$(ProjectDir)/header</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -114,8 +116,10 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>$(ProjectDir)/header</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -139,27 +143,33 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="enemy.cpp" />
-    <ClCompile Include="faster_enemy.cpp" />
-    <ClCompile Include="fast_enem.cpp" />
-    <ClCompile Include="Map.cpp" />
-    <ClCompile Include="Menu.cpp" />
-    <ClCompile Include="player.cpp" />
-    <ClCompile Include="punctation.cpp" />
-    <ClCompile Include="slow_enem.cpp" />
+    <ClCompile Include="FileReader.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="source\Enemy.cpp" />
+    <ClCompile Include="source\FastEnemy.cpp" />
+    <ClCompile Include="source\FastestEnemy.cpp" />
+    <ClCompile Include="source\Map.cpp" />
+    <ClCompile Include="source\Menu.cpp" />
+    <ClCompile Include="source\Player.cpp" />
+    <ClCompile Include="source\Punctation.cpp" />
+    <ClCompile Include="source\SlowEnemy.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="enemy.h" />
-    <ClInclude Include="faster_enemy.h" />
-    <ClInclude Include="fast_enem.h" />
-    <ClInclude Include="Map.h" />
-    <ClInclude Include="Menu.h" />
-    <ClInclude Include="player.h" />
-    <ClInclude Include="punctation.h" />
-    <ClInclude Include="slow_enem.h" />
+    <ClInclude Include="FileReader.h" />
+    <ClInclude Include="header\Enemy.h" />
+    <ClInclude Include="header\FastEnemy.h" />
+    <ClInclude Include="header\FastestEnemy.h" />
+    <ClInclude Include="header\Map.h" />
+    <ClInclude Include="header\Menu.h" />
+    <ClInclude Include="header\Player.h" />
+    <ClInclude Include="header\Punctation.h" />
+    <ClInclude Include="header\SlowEnemy.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Map.txt" />
+    <Text Include="resources\Loose.txt" />
+    <Text Include="resources\Map.txt" />
+    <Text Include="resources\Start.txt" />
+    <Text Include="resources\Win.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
