@@ -206,7 +206,7 @@ void Map::delete_barrier()
     for(int i=0; i<counter_of_barriers-1; i++)
     {
     start_string[barrier_pos_y[i]][barrier_pos_x[i]]=' ';
-    coord = {barrier_pos_x[i], barrier_pos_y[i]};
+    coord = {static_cast<short>(barrier_pos_x[i]), static_cast<short>(barrier_pos_y[i])};
     SetConsoleCursorPosition(hOutput, coord);
     WriteConsoleA(hOutput, buff, 1, NULL, NULL);
     }
