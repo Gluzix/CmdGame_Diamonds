@@ -1,13 +1,10 @@
-#ifndef MENU_H
-#define MENU_H
+#pragma once
+
 #include <string>
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-/*Plik naglowkowy klasy Menu, wszysatkie atrybuty i metody, odpowiadaja za stworzenie menu poczatkowego, oraz menu po przegranej/wygranej*/
-//Zostal uzyty konstruktor parametryczny, w pliku main podajemy dane do stworzenia obiektu.
-//Zostala wykorzystana dwuwymiarowa tablica alokowana w starym stylu przy uzyciu MALLOC
-//w destruktorze, zwalnaimy pamiec za pomoca funkcji free
+
 class Menu
 {
     char**start_string;
