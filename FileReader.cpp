@@ -8,7 +8,7 @@ FileReader::FileReader(const std::string& filename)
 
 }
 
-int FileReader::getFileHeight()
+int FileReader::getFileHeight() const
 {
     int height = 0;
 
@@ -17,7 +17,7 @@ int FileReader::getFileHeight()
 
     if (!fstream) {
         std::cout << "Couldn't open the file";
-        return 0;
+        return -1;
     }
 
     while (std::getline(fstream, tempLine)) {
@@ -30,30 +30,21 @@ int FileReader::getFileHeight()
     return height;
 }
 
-int FileReader::getFileWidth()
+int FileReader::getFileWidth() const
 {
+    int width = 0;
 
-    int i, w, width, height;
-    char buforek;
-    width = 1;
-    height = 1;
-    FILE* plik;
-    plik = fopen(str, "r");
-    if (plik == NULL)
-    {
-        cout << "Error";
+    std::fstream fstream(mFilename, std::ios_base::in);
+    std::string tempLine;
+
+    if (!fstream) {
+        std::cout << "Couldn't open the file";
+        return -1;
     }
-    else
-    {
-        while (fscanf_s(plik, "%c", &buforek) != EOF)
-        {
-            width++;
-            if (buforek == '\n')
-            {
-                height++;
-            }
-        }
+
+    if (std::getline(fstream, tempLine)) {
+        return static_cast<int>(tempLine.size());
     }
-    fclose(plik);
-    return width;
+
+    return -1;
 }

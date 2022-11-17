@@ -6,8 +6,9 @@ class FileReader
 {
 public:
 	FileReader(const std::string &filename);
-	int getFileHeight();
-	int getFileWidth();
+
+	int getFileHeight() const;
+	int getFileWidth() const;
 
 private:
 	std::string mFilename;

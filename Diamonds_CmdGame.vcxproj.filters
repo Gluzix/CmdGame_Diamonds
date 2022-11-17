@@ -43,6 +43,9 @@
     <ClCompile Include="FileReader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Application.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="header\Enemy.h">
@@ -70,6 +73,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="FileReader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Application.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
