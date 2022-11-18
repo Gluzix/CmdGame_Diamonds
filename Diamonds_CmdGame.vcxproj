@@ -143,12 +143,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Application.cpp" />
-    <ClCompile Include="FileReader.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="source\Application.cpp" />
     <ClCompile Include="source\Enemy.cpp" />
     <ClCompile Include="source\FastEnemy.cpp" />
     <ClCompile Include="source\FastestEnemy.cpp" />
+    <ClCompile Include="source\FileReader.cpp" />
     <ClCompile Include="source\Map.cpp" />
     <ClCompile Include="source\Menu.cpp" />
     <ClCompile Include="source\Player.cpp" />
@@ -156,11 +156,11 @@
     <ClCompile Include="source\SlowEnemy.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Application.h" />
-    <ClInclude Include="FileReader.h" />
+    <ClInclude Include="header\Application.h" />
     <ClInclude Include="header\Enemy.h" />
     <ClInclude Include="header\FastEnemy.h" />
     <ClInclude Include="header\FastestEnemy.h" />
+    <ClInclude Include="header\FileReader.h" />
     <ClInclude Include="header\Map.h" />
     <ClInclude Include="header\Menu.h" />
     <ClInclude Include="header\Player.h" />

@@ -1,43 +1,22 @@
 #pragma once
 
 #include <string>
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
+#include <vector>
+#include "FileReader.h"
 
 class Menu
 {
-    char**start_string;
-    char *path;
-    int width, height, choice;
-    public:
-        Menu(int x, int y, const char *p):width(x), height(y), choice(0)
-        {
-            int dlugosc;
-            dlugosc=strlen(p);
-            path=(char*)malloc(dlugosc*sizeof(char));
-            strcpy(path, p);
-            //--alokacja napisu startowego.
-            start_string=(char**)malloc(height*sizeof(char*));
-            for(int i=0; i<height; i++)
-            {
-                start_string[i]=(char*)malloc(width*sizeof(char));
-            }
-        }
-        ~Menu()
-        {
-            for(int i=0; i<height; i++)
-            {
-                free(start_string[i]);
-            }
-            free(start_string);
-            free(path);
-        }
-        void create_menu();
-        void show_menu(int) const;
-        void show_string() const;
-        void enter_space() const;
-        int return_width();
-        int return_height();
+public:
+    Menu();
+    Menu(const Menu& menu) = delete;
+
+    void show(int index) const;
+
+private:
+    void showReadMenuOnScreen() const;
+    void chooseStart() const;
+    void chooseAbout() const;
+    void chooseExit() const;
+
+    FileReader fileReader{"resources/Logo.txt"};
 };
-#endif // MENU_H
