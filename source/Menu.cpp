@@ -1,94 +1,66 @@
 #include "Menu.h"
 #include <iostream>
-using namespace std;
-void Menu::enter_space() const
+#include <fstream>
+
+Menu::Menu()
 {
-           cout<<endl<<endl;
-            for(int i=0; i<width/2-5; i++)
-            {
-                cout<<" ";
-            }
 }
-void Menu::create_menu(){
-    FILE *plik;
-    plik=fopen(path, "r");
-    width = width/height;
-    width++;
-    for(int i=0; i<height; i++)
+
+void Menu::show(int index) const
+{
+    switch (index)
     {
-        for(int w=0; w<width; w++)
-        {
-            fscanf(plik, "%c", &start_string[i][w]);
-        }
-    }
-    fclose(plik);
-}
-void Menu::show_menu(int chc) const
-{
-        switch(chc)
-        {
-        case 0:
-            for(int i=0; i<height; i++)
-            {
-                for(int w=0; w<width; w++)
-                {
-                    cout<<start_string[i][w];
-                }
-            }
-            enter_space();
-            cout<<">>Start Game<<"<<endl;
-            enter_space();
-            cout<<"About Creators"<<endl;
-            enter_space();
-            cout<<"Exit"<<endl;
+    case 0:
+        chooseStart();
         break;
-        case 1:
-            for(int i=0; i<height; i++)
-            {
-                for(int w=0; w<width; w++)
-                {
-                    cout<<start_string[i][w];
-                }
-            }
-            enter_space();
-            cout<<"Start Game"<<endl;
-            enter_space();
-            cout<<">>About Creators<<"<<endl;
-            enter_space();
-            cout<<"Exit"<<endl;
-            break;
-        case 2:
-            for(int i=0; i<height; i++)
-            {
-                for(int w=0; w<width; w++)
-                {
-                    cout<<start_string[i][w];
-                }
-            }
-            enter_space();
-            cout<<"Start Game"<<endl;
-            enter_space();
-            cout<<"About Creators"<<endl;
-            enter_space();
-            cout<<">>Exit<<"<<endl;
-            break;
-        }
-}
-void Menu::show_string() const
-{
-    for(int i=0; i<height; i++)
-    {
-        for(int w=0; w<width; w++)
-        {
-            cout<<start_string[i][w];
-        }
+    case 1:
+        chooseAbout();
+        break;
+    case 2:
+        chooseExit();
+        break;
     }
 }
-int Menu::return_height()
+
+void Menu::showReadMenuOnScreen() const
 {
-    return this->height;
+    for (const std::string& element : fileReader.getContent()) {
+        std::cout << element << std::endl;
+    }
 }
-int Menu::return_width()
+
+void Menu::chooseStart() const
 {
-    return this->width;
+    showReadMenuOnScreen();
+
+    std::cout << std::endl;
+    std::cout << ">>Start Game<<" << std::endl;
+    std::cout << std::endl;
+    std::cout << "About Creators" << std::endl;
+    std::cout << std::endl;
+    std::cout << "Exit" << std::endl;
+}
+
+void Menu::chooseAbout() const
+{
+    showReadMenuOnScreen();
+
+    std::cout << std::endl;
+    std::cout << "Start Game" << std::endl;
+    std::cout << std::endl;
+    std::cout << ">>About Creators<<" << std::endl;
+    std::cout << std::endl;
+    std::cout << "Exit" << std::endl;
+}
+
+void Menu::chooseExit() const
+{
+    showReadMenuOnScreen();
+
+    std::cout << std::endl;
+    std::cout << "Start Game" << std::endl;
+    std::cout << std::endl;
+    std::cout << "About Creators" << std::endl;
+    std::cout << std::endl;
+    std::cout << ">>Exit<<" << std::endl;
 }
