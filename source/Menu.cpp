@@ -1,6 +1,7 @@
 #include "Menu.h"
 #include <iostream>
 #include <fstream>
+#include <Windows.h>
 
 Menu::Menu()
 {
@@ -24,6 +25,8 @@ void Menu::show(int index) const
 
 void Menu::showReadMenuOnScreen() const
 {
+    system("cls");
+
     for (const std::string& element : fileReader.getContent()) {
         std::cout << element << std::endl;
     }

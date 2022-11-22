@@ -23,6 +23,11 @@ const std::vector<std::string> &FileReader::getContent() const
     return readFile;
 }
 
+void FileReader::modifyContent(int y, int x, char ch)
+{
+    readFile[y][x] = ch;
+}
+
 int FileReader::getHeight() const
 {
     return height;
