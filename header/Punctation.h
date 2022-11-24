@@ -1,15 +1,15 @@
-#ifndef PUNCTATION_H
-#define PUNCTATION_H
+#pragma once
 
-
-class punctation
+class Punctation
 {
-    int points;
-    public:
-    punctation(int pkt):points(pkt){}
-    void update_points();
-    void show_points();
-    int return_of_players_points();
-};
+public:
+    Punctation(int maxPunctation);
 
-#endif // PUNCTATION_H
+    void update();
+    void show();
+    int get();
+
+private:
+    int punctation{0};
+    int maxPunctation;
+};
