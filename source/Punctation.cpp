@@ -1,22 +1,30 @@
 #include "Punctation.h"
-#include <iostream>
-#include <stdlib.h>
-#include <stdio.h>
+#include <sstream>
 #include <windows.h>
-void punctation::update_points()
+
+Punctation::Punctation(int maxPunctation)
+    : maxPunctation(maxPunctation)
 {
-    points++;
+
 }
-void punctation::show_points()
+
+void Punctation::update()
 {
-    char buf[16];
-    sprintf(buf, "Diamonds: %d/12", points);
+    punctation++;
+}
+
+void Punctation::show()
+{
+    std::stringstream ss;
+    ss << "Diamonds: " << punctation << "/" << maxPunctation;
     HANDLE hOutput = GetStdHandle(STD_OUTPUT_HANDLE);
-    COORD coord = {48,26};
+    COORD coord = { 48,26 };
     SetConsoleCursorPosition(hOutput, coord);
-    WriteConsoleA(hOutput, buf, 16, NULL, NULL);
+    std::string punctationStr = ss.str();
+    WriteConsoleA(hOutput, punctationStr.c_str(), punctationStr.length(), NULL, NULL);
 }
-int punctation::return_of_players_points()
+
+int Punctation::get()
 {
-    return points;
+    return punctation;
 }

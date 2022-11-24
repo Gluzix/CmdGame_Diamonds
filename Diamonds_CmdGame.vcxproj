@@ -145,6 +145,7 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="source\Application.cpp" />
+    <ClCompile Include="source\Coordinates.cpp" />
     <ClCompile Include="source\Enemy.cpp" />
     <ClCompile Include="source\FastEnemy.cpp" />
     <ClCompile Include="source\FastestEnemy.cpp" />
@@ -157,6 +158,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="header\Application.h" />
+    <ClInclude Include="header\Coordinates.h" />
     <ClInclude Include="header\Enemy.h" />
     <ClInclude Include="header\FastEnemy.h" />
     <ClInclude Include="header\FastestEnemy.h" />
