@@ -42,5 +42,4 @@ private:
     int points{0};
 
     FileReader fileReader{ "resources/Map.txt" };
-
 };

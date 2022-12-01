@@ -14,6 +14,7 @@
 #include "FastEnemy.h"
 #include "SlowEnemy.h"
 #include "FileReader.h"
+#include "MenuHandler.h"
 
 Application::Application()
 {
@@ -23,41 +24,31 @@ Application::Application()
 void Application::run()
 {
     srand(time(NULL));
-    int x = 0;
+    int menuIndex = 0;
     std::string startPathStr = "resources/Start.txt";
     std::string mapPathStr = "resources/Map.txt";
     FileReader reader(mapPathStr);
-    Menu m1;
-    Map mp1(reader.getFileWidth(), reader.getFileHeight(), mapPathStr);
-    mp1.create_map();
+    Map mp1;
+
     int way = 0;
+
+    MenuHandler menuHandler;
 
     while (1)
     {
-        while (1)
-        {
-            m1.show(x);
-            if (GetAsyncKeyState(VK_UP))
-            {
-                if (x > 0) x--;
-                else x = 2;
-            }
-            else if (GetAsyncKeyState(VK_DOWN))
-            {
-                if (x < 2) x++;
-                else x = 0;
-            }
-            else if (GetAsyncKeyState(VK_RETURN))
-            {
-                system("cls");
-                break;
-            }
-            _getch();
-            system("cls");
+        // Menu handling
+        GameStatus status = menuHandler.run();
+
+        switch (status) {
+            case GameStatus::Start: break;
+            case GameStatus::About: break;
+            case GameStatus::Exit: break;
+            default: break;
         }
+
         if (x == 0)
         {
-            mp1.show_map();
+            mp1.drawMap();
 
             std::vector<Enemy*> container;
             player player(mp1.return_player_pos_x(), mp1.return_player_pos_y());
