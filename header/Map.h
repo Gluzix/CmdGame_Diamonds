@@ -7,7 +7,7 @@
 class Map
 {
     public:
-        Map(const FileReader &reader);
+        Map();
         void drawMap();
         bool isObstacleForEnemy(int x, int y, int i);
         bool isObstacleForPlayer(int x, int y);
@@ -23,6 +23,8 @@ class Map
         void removeBarriers();
 
         bool hasPlayerFinished(const Coordinates& coords);
+
+        const FileReader& getFileReader();
 
 private:
     void drawAsteriks();
@@ -41,5 +43,5 @@ private:
 
     int points{0};
 
-    FileReader& fileReader;
+    FileReader fileReader{ "resources/Map.txt" };
 };

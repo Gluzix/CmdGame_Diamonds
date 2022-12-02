@@ -1,9 +1,9 @@
-#include <iostream>
-#include "Menu.h"
-#include <Windows.h>
+#include "Application.h"
 
 int main()
 {
+	Application app;
+	app.run();
 
 	return 0;
 }

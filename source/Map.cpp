@@ -3,8 +3,7 @@
 #include <windows.h>
 #include <stdlib.h>
 
-Map::Map(const FileReader& reader)
-    : fileReader(reader)
+Map::Map()
 {
 
 }
@@ -143,6 +142,11 @@ bool Map::hasPlayerFinished(const Coordinates &coords)
         return true;
     }
     return false;
+}
+
+const FileReader& Map::getFileReader()
+{
+    return fileReader;
 }
 
 void Map::drawAsteriks()
