@@ -1,4 +1,6 @@
 #include "GameHandler.h"
+#include "FastEnemy.h"
+#include "SlowEnemy.h"
 
 GameHandler::GameHandler()
 {
@@ -8,7 +10,6 @@ void GameHandler::run()
 {
     map.drawMap();
 
-    std::vector<Enemy*> container;
     player player(mp1.return_player_pos_x(), mp1.return_player_pos_y());
 
     for (int i = 0; i < 13; i++)
@@ -162,8 +163,22 @@ void GameHandler::run()
 
 void GameHandler::prepareEnemies()
 {
-	fastEnemies.clear();
-	slowEnemies.clear();
+    enemies.clear();
 
+    int width = 0;
+    int height = 0;
 
+    for (std::string line : map.getFileReader().getContent()) {
+        for (const char& ch : line) {
+            if (ch == '&') {
+                enemies.push_back(std::shared_ptr<Enemy>(new FastEnemy(Coordinates(width, height))));
+            }
+            else if (ch == '^') {
+                enemies.push_back(std::shared_ptr<Enemy>(new SlowEnemy(Coordinates(width, height))));
+            }
+            width++;
+        }
+        width = 0;
+        height++;
+    }
 }

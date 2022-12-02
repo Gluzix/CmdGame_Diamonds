@@ -4,6 +4,7 @@
 #include "Map.h"
 #include <vector>
 #include <FileReader.h>
+#include <memory>
 
 class GameHandler
 {
@@ -14,10 +15,8 @@ public:
 	void prepareEnemies();
 
 private:
-	std::vector<Enemy> fastEnemies;
-	std::vector<Enemy> slowEnemies;
-
-	const FileReader& fileReader;
+	// TODO: try std::reference_wrapper?
+	std::vector<std::shared_ptr<Enemy>> enemies;
 
 	Map map;
 };
