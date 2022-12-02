@@ -36,7 +36,6 @@ void Application::run()
 
     while (1)
     {
-        // Menu handling
         GameStatus status = menuHandler.run();
 
         switch (status) {
