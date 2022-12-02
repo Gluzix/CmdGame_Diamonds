@@ -55,7 +55,7 @@
     <ClCompile Include="source\MenuHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameHandler.cpp">
+    <ClCompile Include="source\GameHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -99,7 +99,7 @@
     <ClInclude Include="header\MenuHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameHandler.h">
+    <ClInclude Include="header\GameHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
