@@ -7,7 +7,7 @@
 class Map
 {
     public:
-        Map();
+        Map(const FileReader &reader);
         void drawMap();
         bool isObstacleForEnemy(int x, int y, int i);
         bool isObstacleForPlayer(int x, int y);
@@ -41,5 +41,5 @@ private:
 
     int points{0};
 
-    FileReader fileReader{ "resources/Map.txt" };
+    FileReader& fileReader;
 };

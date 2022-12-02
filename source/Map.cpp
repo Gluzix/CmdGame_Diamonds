@@ -3,7 +3,8 @@
 #include <windows.h>
 #include <stdlib.h>
 
-Map::Map()
+Map::Map(const FileReader& reader)
+    : fileReader(reader)
 {
 
 }
