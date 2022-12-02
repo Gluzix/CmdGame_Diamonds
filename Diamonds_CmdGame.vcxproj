@@ -143,6 +143,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GameHandler.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MenuHandler.cpp" />
     <ClCompile Include="source\Application.cpp" />
@@ -159,6 +160,7 @@
     <ClCompile Include="source\SlowEnemy.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameHandler.h" />
     <ClInclude Include="header\Application.h" />
     <ClInclude Include="header\Coordinates.h" />
     <ClInclude Include="header\Enemy.h" />

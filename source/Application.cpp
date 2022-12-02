@@ -28,7 +28,7 @@ void Application::run()
     std::string startPathStr = "resources/Start.txt";
     std::string mapPathStr = "resources/Map.txt";
     FileReader reader(mapPathStr);
-    Map mp1;
+    Map map(reader);
 
     int way = 0;
 
@@ -38,16 +38,8 @@ void Application::run()
     {
         GameStatus status = menuHandler.run();
 
-        switch (status) {
-            case GameStatus::Start: break;
-            case GameStatus::About: break;
-            case GameStatus::Exit: break;
-            default: break;
-        }
-
-        if (x == 0)
-        {
-            mp1.drawMap();
+        if (status == GameStatus::Start) {
+            map.drawMap();
 
             std::vector<Enemy*> container;
             player player(mp1.return_player_pos_x(), mp1.return_player_pos_y());
@@ -200,12 +192,13 @@ void Application::run()
                 }
             }
         }
-        else if (x == 1)
-        {
+        else if (status == GameStatus::About) {
             system("cls");
             std::cout << "About creators:";
             break;//something to do
         }
-        else if (x == 2) exit(0);//something to do
+        else {
+            exit(0);//something to do
+        }
     }
 }
