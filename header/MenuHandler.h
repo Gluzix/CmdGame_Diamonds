@@ -15,6 +15,10 @@ public:
 	GameStatus run();
 
 private:
+	void upArrowClicked();
+	void downArrowClicked();
+
 	Menu menu;
+	GameStatus status {GameStatus::Start};
 };
 
