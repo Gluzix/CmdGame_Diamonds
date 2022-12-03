@@ -10,54 +10,47 @@ Player::Player(const Coordinates& coords)
 
 }
 
-void Player::try_to_move(int try_way)
+void Player::tryToMove(Way way)
 {
-    switch(try_way)
+    switch(way)
     {
-    case 0:
-            pos_y--;
-            break;
-    case 1:
-            pos_y++;
-            break;
-    case 2:
-            pos_x--;
-            break;
-        case 3:
-            pos_x++;
-            break;
+    case Way::Up:
+        coordinates.y--;
+        break;
+    case Way::Down:
+        coordinates.y++;
+        break;
+    case Way::Left:
+        coordinates.x--;
+        break;
+    case Way::Right:
+        coordinates.x++;
+        break;
     }
 }
 
-int Player::return_pos_x()
+void Player::restoreCoordinates()
 {
-    return pos_x;
+    coordinates = oldCoordinates;
 }
 
-int Player::return_pos_y()
+const Coordinates& Player::pos()
 {
-    return pos_y;
+    return coordinates;
 }
 
-void Player::restore_coords()
-{
-    pos_x=old_pos_x;
-    pos_y=old_pos_y;
-}
-
-void Player::update_plyer()
+void Player::updatePlayer()
 {
     const char *buff=" ";
     const char *enem="@";
     HANDLE hOutput = GetStdHandle(STD_OUTPUT_HANDLE);
-    COORD coord_first = {pos_x,pos_y};
-    COORD coord_second = {old_pos_x,old_pos_y};
-    SetConsoleCursorPosition(hOutput, coord_second);
+    COORD currentCoords = { coordinates.x, coordinates.y };
+    COORD oldCoords = { oldCoordinates.x, oldCoordinates.y };
+    SetConsoleCursorPosition(hOutput, oldCoords);
     WriteConsoleA(hOutput, buff, 1, NULL,NULL);
     SetConsoleTextAttribute(hOutput, FOREGROUND_INTENSITY | FOREGROUND_GREEN );
-    SetConsoleCursorPosition(hOutput, coord_first);
+    SetConsoleCursorPosition(hOutput, currentCoords);
     WriteConsoleA(hOutput, enem, 1, NULL,NULL);
     SetConsoleTextAttribute ( hOutput, FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-    old_pos_x=pos_x;
-    old_pos_y=pos_y;
+    oldCoordinates = coordinates;
 }

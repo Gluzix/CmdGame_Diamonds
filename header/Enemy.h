@@ -1,19 +1,22 @@
 #pragma once
+
 #include "Coordinates.h"
+#include "Player.h"
 
 class Enemy
 {
 public:
     Enemy(int speed);
-    ~Enemy();
-    virtual void updatePosition();
-    virtual void updateConsoleCoordinates();
-    virtual void backToOldPosition();
-    virtual bool isPlayerNear(const Coordinates& coordinates);
+    void updatePosition();
+    void backToOldPosition();
+    bool isPlayerNear(const Coordinates& coordinates);
+
+    virtual void updateConsoleCoordinates() = 0;
     virtual Coordinates getCoords();
 
 private:
-    Coordinates coords;
+    Coordinates coordinates{0, 0};
+    Coordinates oldCoordinates{ 0, 0 };
+    Way way{Way::Up};
     int speed;
-    int way;
 };
