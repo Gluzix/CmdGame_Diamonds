@@ -12,9 +12,10 @@ public:
 	GameHandler();
 
 	void run();
-	void prepareEnemies();
 
 private:
+	void prepareEnemies();
+
 	// TODO: try std::reference_wrapper?
 	std::vector<std::shared_ptr<Enemy>> enemies;
 

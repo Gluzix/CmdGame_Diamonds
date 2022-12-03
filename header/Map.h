@@ -9,8 +9,8 @@ class Map
     public:
         Map();
         void drawMap();
-        bool isObstacleForEnemy(int x, int y, int i);
-        bool isObstacleForPlayer(int x, int y);
+        bool isObstacleForEnemy(const Coordinates& coords, int i);
+        bool isObstacleForPlayer(const Coordinates& coords);
 
         const Coordinates& getSlowerEnemyCoords(int index);
         const Coordinates& getFasterEnemyCoords(int index);

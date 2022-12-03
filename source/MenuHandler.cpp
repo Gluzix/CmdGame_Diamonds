@@ -25,7 +25,7 @@ GameStatus MenuHandler::run()
             return status;
         }
 
-        getch();
+        _getch();
         system("cls");
     }
 	return GameStatus::Exit;

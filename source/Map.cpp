@@ -48,23 +48,21 @@ void Map::drawMap()
     }
 }
 
-bool Map::isObstacleForEnemy(int x, int y, int i)
+bool Map::isObstacleForEnemy(const Coordinates& coords, int i)
 {
-    if(fileReader.getContent()[y][x] == ' ' || fileReader.getContent()[y][x] == '@') {
-        slowerEnemiesPos[i] = Coordinates(x, y);
-        return true;
+    if(fileReader.getContent()[coords.y][coords.x] == ' ' || fileReader.getContent()[coords.y][coords.x] == '@') {
+        slowerEnemiesPos[i] = coords;
+        return false;
     }
-    return false;
+    return true;
 }
 
-bool Map::isObstacleForPlayer(int x, int y)
+bool Map::isObstacleForPlayer(const Coordinates& coords)
 {
-    if (fileReader.getContent()[y][x] == ' ' || fileReader.getContent()[y][x] == '@'
-        || fileReader.getContent()[y][x] == '*' ) {
-
-        return true;
+    if (fileReader.getContent()[coords.y][coords.x] == ' ' || fileReader.getContent()[coords.y][coords.x] == '*' ) {
+        return false;
     }
-    return false;
+    return true;
 }
 
 const Coordinates& Map::getSlowerEnemyCoords(int index)
