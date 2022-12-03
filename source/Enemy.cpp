@@ -31,11 +31,6 @@ void Enemy::updatePosition()
     }
 }
 
-void Enemy::updateConsoleCoordinates()
-{
-
-}
-
 void Enemy::backToOldPosition()
 {
     coordinates = oldCoordinates;

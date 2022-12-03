@@ -14,7 +14,7 @@ public:
     virtual void updateConsoleCoordinates() = 0;
     virtual Coordinates getCoords();
 
-private:
+protected:
     Coordinates coordinates{0, 0};
     Coordinates oldCoordinates{ 0, 0 };
     Way way{Way::Up};
