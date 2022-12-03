@@ -22,9 +22,6 @@
     <ClCompile Include="source\FastEnemy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\FastestEnemy.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="source\Map.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -49,9 +46,6 @@
     <ClCompile Include="source\Coordinates.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MenuHandler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="source\MenuHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -64,9 +58,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="header\FastEnemy.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="header\FastestEnemy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="header\Map.h">
@@ -91,9 +82,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="header\Coordinates.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MenuHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="header\MenuHandler.h">

@@ -5,9 +5,7 @@
 class SlowEnemy : public Enemy
 {
 public:
-    SlowEnemy(int speed);
+    SlowEnemy(const Coordinates &beginCoordinates);
 
     virtual void updateConsoleCoordinates();
-    virtual bool isPlayerNear(int, int);
-
 };
