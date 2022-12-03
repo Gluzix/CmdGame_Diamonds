@@ -6,37 +6,29 @@ Enemy::Enemy(int speed)
 
 }
 
-Enemy::~Enemy() 
-{
-
-}
-
 void Enemy::updatePosition()
 {
-    if (who_used_round == 1)
-    {
-        speed = 0;
+    switch (way) {
+    case Way::Up:
+        coordinates.y--;
+        break;
+    case Way::Down:
+        coordinates.y++;
+        break;
+    case Way::Left:
+        coordinates.x--;
+        break;
+    case Way::Right:
+        coordinates.x++;
+        break;
     }
-    if (speed == 4)
-    {
-        if (way == 0) {
-            coords.y++;
-        }
-        else if (way == 1) {
-            coords.x++;
-        }
-        else if (way == 2) {
-            coords.y--;
-        }
-        else if (way == 3) {
-            coords.x--;
-        }
+
+    if (speed == 4) {
         speed = 0;
     }
     else {
         speed++;
     }
-    who_used_round = 0;
 }
 
 void Enemy::updateConsoleCoordinates()
@@ -46,12 +38,12 @@ void Enemy::updateConsoleCoordinates()
 
 void Enemy::backToOldPosition()
 {
-
+    coordinates = oldCoordinates;
 }
 
 Coordinates Enemy::getCoords()
 {
-	return Coordinates();
+	return coordinates;
 }
 
 bool Enemy::isPlayerNear(const Coordinates &coordinates)

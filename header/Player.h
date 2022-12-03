@@ -2,16 +2,22 @@
 
 #include <Coordinates.h>
 
+enum class Way : int {
+    Up = 0,
+    Down = 1,
+    Left = 2,
+    Right = 3
+};
+
 class Player
 {
 public:
     Player(const Coordinates &coords);
 
-    void try_to_move(int);
-    void update_plyer();
-    void restore_coords();
-    int return_pos_x();
-    int return_pos_y();
+    void tryToMove(Way way);
+    void updatePlayer();
+    void restoreCoordinates();
+    const Coordinates& pos();
 
 private:
     Coordinates coordinates;
