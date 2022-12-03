@@ -1,61 +1,37 @@
 #include "SlowEnemy.h"
 #include <windows.h>
 
-void SlowEnemy::UpdatePosition()
+SlowEnemy::SlowEnemy(int speed) :
+    speed(speed)
 {
-    if(who_used_round==1)
-    {
-        round=0;
-    }
-    if(round==4)
-    {
-        if(way==0)pos_y++;
-        else if(way==1)pos_x++;
-        else if(way==2)pos_y--;
-        else if(way==3)pos_x--;
-        round=0;
-    }
-    else round++;
-    who_used_round=0;
+
 }
 
-void SlowEnemy::UpdateConsoleCoordinates()
+void SlowEnemy::updateConsoleCoordinates()
 {
     const char *buff=" ";
     const char *enem="&";
     HANDLE hOutput = GetStdHandle(STD_OUTPUT_HANDLE);
-    COORD coord_first = {pos_x, pos_y};
-    COORD coord_second = {old_pos_x, old_pos_y};
-    SetConsoleCursorPosition(hOutput, coord_second);
+    COORD currrentCoords = { coordinates.x, coordinates .y };
+    COORD oldCoords = { coordinates.x, coordinates .y };
+    SetConsoleCursorPosition(hOutput, oldCoords);
     WriteConsoleA(hOutput, buff, 1, NULL, NULL);
     SetConsoleTextAttribute(hOutput, FOREGROUND_RED | FOREGROUND_INTENSITY);
-    SetConsoleCursorPosition(hOutput, coord_first);
+    SetConsoleCursorPosition(hOutput, currrentCoords);
     WriteConsoleA(hOutput, enem, 1, NULL, NULL);
     SetConsoleTextAttribute (hOutput, FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-    old_pos_x=pos_x;
-    old_pos_y=pos_y;
+    oldCoordinates = coordinates;
 }
 
-void SlowEnemy::BackToOldPosition()
+bool SlowEnemy::isPlayerNear(const Coordinates &playerCoords)
 {
-    pos_x=old_pos_x;
-    pos_y=old_pos_y;
-    way=rand() % 4;
-}
-
-bool SlowEnemy::IsPlayerNear(int x, int y)
-{
-    decision = false;
-    disparity_x = pos_x - x;
-    disparity_y = pos_y - y;
+    bool decision = false;
+    int disparity_x = coordinates.x - playerCoords.x;
+    int disparity_y = coordinates.y - playerCoords.y;
     if (disparity_x < 0)disparity_x = disparity_x * (-1);
     if (disparity_y < 0)disparity_y = disparity_y * (-1);
     if ((disparity_x <= 8) && (disparity_y <= 5))
     {
-        if (who_used_round == 0)
-        {
-            round = 0;
-        }
         decision = true;
         if (round == 4)
         {
@@ -113,14 +89,4 @@ bool SlowEnemy::IsPlayerNear(int x, int y)
     }
     return decision;
 
-}
-
-int SlowEnemy::GetX()
-{
-    return pos_x;
-}
-
-int SlowEnemy::GetY()
-{
-    return pos_y;
 }
