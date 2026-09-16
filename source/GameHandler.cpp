@@ -19,6 +19,11 @@ void GameHandler::run()
     map.drawMap();
     prepareEnemies();
 
+    // drawMap() has already painted the '&', '^' and '%' glyphs, so the spawn markers can
+    // leave the map data now. Otherwise every spawn cell stays a phantom wall for the rest
+    // of the round: the player could never walk through it and no enemy could re-enter it.
+    map.clearEnemySpawns();
+
     Punctation punctation(map.getPoints(), map.getFileReader().getHeight());
     punctation.show();
 
@@ -31,6 +36,10 @@ void GameHandler::run()
         if (GetAsyncKeyState(VK_ESCAPE)) {
             return;
         }
+
+        // At the top of a frame the player's drawn cell and logical cell are the same, so
+        // this is the tile that has to be repainted if the player walks off it.
+        const Coordinates previousPosition = player.pos();
 
         if (GetAsyncKeyState(VK_UP)) {
             player.tryToMove(Way::Up);
@@ -72,6 +81,10 @@ void GameHandler::run()
         }
 
         player.updatePlayer();
+
+        if (previousPosition != player.pos()) {
+            map.redrawTile(previousPosition);
+        }
 
         if (isPlayerCaught(player.pos())) {
             break;
@@ -121,6 +134,8 @@ void GameHandler::moveEnemies(const Coordinates& playerCoordinates)
             continue;
         }
 
+        const Coordinates previousPosition = enemy->getCoords();
+
         if (enemy->canChasePlayer() && enemy->isPlayerNear(playerCoordinates)) {
             enemy->tryToFollowPlayer(playerCoordinates);
         }
@@ -144,7 +159,10 @@ void GameHandler::moveEnemies(const Coordinates& playerCoordinates)
         }
 
         if (enemy->hasMoved()) {
+            // updateConsoleCoordinates() blanks the cell the enemy left, which would rub
+            // out a diamond it walked over, so put the map's own tile back afterwards.
             enemy->updateConsoleCoordinates();
+            map.redrawTile(previousPosition);
         }
     }
 }
