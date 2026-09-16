@@ -1,0 +1,35 @@
+# Claude reviews each pull request. Needs the CLAUDE_CODE_OAUTH_TOKEN repo
+# secret (from `claude setup-token`) and the Claude GitHub App installed.
+# Model is pinned on the --model line; add "synchronize" below to also
+# re-review every push to an open PR (costs a run each time).
+name: Claude Review
+
+on:
+  pull_request:
+    types: [opened, reopened, ready_for_review]
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          show_full_output: true
+          prompt: |
+            You are reviewing pull request #${{ github.event.pull_request.number }} in ${{ github.repository }}.
+            1. Run: gh pr diff ${{ github.event.pull_request.number }}
+            2. Review the diff for real bugs, correctness, thread-safety, and clarity. Skip pure style nits.
+            3. Post your review as ONE comment by running:
+               gh pr comment ${{ github.event.pull_request.number }} --body "YOUR REVIEW"
+            Keep it concise and specific, cite files and lines. If nothing is seriously wrong, say so briefly.
+          claude_args: |
+            --allowedTools "Bash(gh pr diff:*),Bash(gh pr view:*),Bash(gh pr comment:*),Read,Grep"
+            --model claude-haiku-4-5-20251001
