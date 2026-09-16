@@ -145,7 +145,6 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="source\Application.cpp" />
-    <ClCompile Include="source\Coordinates.cpp" />
     <ClCompile Include="source\Enemy.cpp" />
     <ClCompile Include="source\FastEnemy.cpp" />
     <ClCompile Include="source\FileReader.cpp" />
