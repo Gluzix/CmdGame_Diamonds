@@ -1,6 +1,6 @@
-# Builds the game the same way a developer does: CMake with the Visual Studio
-# 2022 generator, both configurations, using the presets from CMakePresets.json.
-# There are no tests, so there is no test step.
+# Builds the game the same way a developer does: CMake with whichever Visual
+# Studio generator it finds, both configurations, using the presets from
+# CMakePresets.json. There are no tests, so there is no test step.
 name: CMake Windows
 
 on:

@@ -8,9 +8,8 @@
   "configurePresets": [
     {
       "name": "windows-msvc",
-      "displayName": "Visual Studio 2022 (x64)",
-      "description": "Multi-configuration build with the Visual Studio 17 2022 generator.",
-      "generator": "Visual Studio 17 2022",
+      "displayName": "Visual Studio (x64)",
+      "description": "Multi-configuration build with whichever Visual Studio generator CMake finds.",
       "architecture": "x64",
       "binaryDir": "${sourceDir}/build",
       "condition": {
