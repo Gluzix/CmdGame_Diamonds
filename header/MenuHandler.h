@@ -2,10 +2,11 @@
 
 #include "Menu.h"
 
+// The values are the index Menu::show() expects, so they must follow the on-screen order.
 enum class GameStatus : int {
 	Start = 0,
-	Exit = 1,
-	About = 2
+	About = 1,
+	Exit = 2
 };
 
 class MenuHandler
