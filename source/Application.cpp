@@ -1,13 +1,10 @@
 #include "Application.h"
+#include <conio.h>
 #include <iostream>
 #include <time.h>
+#include <Windows.h>
 #include "MenuHandler.h"
 #include "GameHandler.h"
-
-Application::Application()
-{
-
-}
 
 void Application::run()
 {
@@ -15,7 +12,7 @@ void Application::run()
 
     MenuHandler menuHandler;
 
-    while (1)
+    while (true)
     {
         GameStatus status = menuHandler.run();
 
@@ -25,11 +22,14 @@ void Application::run()
         }
         else if (status == GameStatus::About) {
             system("cls");
-            std::cout << "About creators:";
-            break;
+            std::cout << "About creators:" << std::endl;
+            std::cout << std::endl << "Press any key to return to the menu..." << std::endl;
+
+            FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
+            _getch();
         }
         else {
-            exit(0);
+            return;
         }
     }
 }
