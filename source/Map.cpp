@@ -80,7 +80,7 @@ bool Map::isObstacleForPlayer(const Coordinates& coords) const
 {
     const char ch = charAt(coords);
 
-    return !(ch == ' ' || ch == '*');
+    return !(ch == ' ' || ch == '*' || ch == '@');
 }
 
 const Coordinates& Map::getPlayerCoords()

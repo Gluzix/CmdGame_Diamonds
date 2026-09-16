@@ -60,7 +60,10 @@ void GameHandler::run()
             break;
         }
 
-        if (map.hasPlayerSwitchedGate(player.pos()) && hasEveryDiamond) {
+        // The lever deliberately does NOT require every diamond: resources/Map.txt puts
+        // one diamond inside the sealed OUT chamber, so demanding a full score before the
+        // barriers open would deadlock the round. Only the exit checks the score.
+        if (map.hasPlayerSwitchedGate(player.pos())) {
             map.removeBarriers();
         }
 
