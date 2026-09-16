@@ -5,6 +5,7 @@
 #include <FileReader.h>
 #include "Coordinates.h"
 
+inline constexpr char mapFilePath[] = "resources/Map.txt";
 
 class Map
 {
@@ -36,5 +37,5 @@ private:
 
     int points{0};
 
-    FileReader fileReader{ "resources/Map.txt" };
+    FileReader fileReader{ mapFilePath };
 };

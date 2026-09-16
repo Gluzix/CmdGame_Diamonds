@@ -96,9 +96,8 @@ The game loads `resources/Logo.txt`, `resources/Map.txt`, `resources/Win.txt` an
 the executable it just produced. `build\Debug\Diamonds_CmdGame.exe` therefore runs from
 anywhere, including a double-click in Explorer.
 
-One more thing worth knowing: the map is printed character by character with no line
-breaks of its own, and nothing in the code resizes the console. The rows only line up if
-the console buffer is as wide as the map — 125 columns for the bundled one.
+One more thing worth knowing: the game sizes its own console window at startup, screen
+buffer and all, so the whole board fits however wide the console was to begin with.
 
 ## Repository layout
 
@@ -125,15 +124,16 @@ CMakeLists.txt   the build: the file list, the compiler settings and the resourc
 * **`FileReader`** — reads a text file into a vector of lines, and lets the map edit a
   single character of it.
 * **`Punctation`** — the diamond counter shown below the map.
-* **`Console`** — the small Win32 helpers for drawing or clearing one character at a set
-  position.
+* **`Console`** — the small Win32 helpers: sizing the console at startup, and drawing or
+  clearing one character at a set position.
 
 ## Editing the map
 
 `resources/Map.txt` is plain text, so you can rebuild the level in any editor. The game
 reads it at startup: it counts the diamonds for the score, places the player at `@`, and
-creates one enemy for every `&`, `^` and `%` it finds. A new map needs no code change as
-long as it uses the same characters.
+creates one enemy for every `&`, `^` and `%` it finds. The console is sized from the file
+as well, so a wider or taller map still fits. A new map needs no code change as long as it
+uses the same characters.
 
 What it does need is a rebuild. The game reads the copy of `resources/` that sits next to
 the executable, so an edit to `resources/Map.txt` only shows up after the next build — or
