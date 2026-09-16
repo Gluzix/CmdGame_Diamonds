@@ -64,12 +64,12 @@ Your progress is printed just below the map as `Diamonds: n/total`.
 
 ## Building and running
 
-The project builds with CMake (3.20 or newer) and MSVC toolset v143 — C++20, x64. It is
-Windows-only: it talks to the Win32 console API directly, and configuring it on any other
-platform stops with an error instead of failing halfway through the compile.
+The project builds with CMake (3.20 or newer) and MSVC — C++20, x64. It is Windows-only:
+it talks to the Win32 console API directly, and configuring it on any other platform
+stops with an error instead of failing halfway through the compile.
 
-`CMakePresets.json` carries the generator and the architecture, so the command line is
-short:
+`CMakePresets.json` carries the architecture and leaves the generator to CMake, which
+picks the newest Visual Studio it finds. Build through the presets:
 
 ```
 cmake --preset windows-msvc
@@ -78,15 +78,16 @@ cmake --build --preset windows-msvc-debug
 
 Swap the last line for `--preset windows-msvc-release` to get the optimised build. Both
 land in `build\`, which holds a single Visual Studio project serving every configuration.
-The same thing spelled out, without presets:
+
+If you would rather spell it out, the same thing without presets:
 
 ```
-cmake -B build -G "Visual Studio 17 2022" -A x64
+cmake -B build -A x64
 cmake --build build --config Debug
 cmake --build build --config Release
 ```
 
-Visual Studio 2022 opens the repository directly — **File → Open → Folder**. It reads
+Visual Studio opens the repository directly — **File → Open → Folder**. It reads
 `CMakePresets.json`, offers `windows-msvc` in the configuration dropdown and runs the game
 on <kbd>F5</kbd>.
 
