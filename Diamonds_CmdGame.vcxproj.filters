@@ -43,9 +43,6 @@
     <ClCompile Include="source\FileReader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\Coordinates.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="source\MenuHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
