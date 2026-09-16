@@ -7,7 +7,7 @@
 class Menu
 {
 public:
-    Menu();
+    Menu() = default;
     Menu(const Menu& menu) = delete;
 
     void show(int index) const;

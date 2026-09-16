@@ -3,10 +3,6 @@
 #include <fstream>
 #include <Windows.h>
 
-Menu::Menu()
-{
-}
-
 void Menu::show(int index) const
 {
     switch (index)

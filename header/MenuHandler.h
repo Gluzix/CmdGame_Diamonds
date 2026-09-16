@@ -11,7 +11,6 @@ enum class GameStatus : int {
 class MenuHandler
 {
 public:
-	MenuHandler();
 	GameStatus run();
 
 private:

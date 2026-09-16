@@ -1,34 +1,46 @@
 #include "MenuHandler.h"
 #include <conio.h>
+#include <cstdlib>
 #include <Windows.h>
 
-MenuHandler::MenuHandler()
+namespace
 {
-
+    constexpr int firstArrowPrefix = 0;
+    constexpr int secondArrowPrefix = 224;
+    constexpr int upArrowCode = 72;
+    constexpr int downArrowCode = 80;
+    constexpr int enterCode = 13;
 }
 
 GameStatus MenuHandler::run()
 {
-    while (1)
-    {
-        menu.show(static_cast<int>(status));
+    FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
+    menu.show(static_cast<int>(status));
 
-        if (GetAsyncKeyState(VK_UP)) {
-            upArrowClicked();
+    while (true)
+    {
+        const int key = _getch();
+
+        if (key == firstArrowPrefix || key == secondArrowPrefix) {
+            const int arrow = _getch();
+
+            if (arrow == upArrowCode) {
+                upArrowClicked();
+            }
+            else if (arrow == downArrowCode) {
+                downArrowClicked();
+            }
+            else {
+                continue;
+            }
+
+            menu.show(static_cast<int>(status));
         }
-        else if (GetAsyncKeyState(VK_DOWN)) {
-            downArrowClicked();
-        }
-        else if (GetAsyncKeyState(VK_RETURN))
-        {
+        else if (key == enterCode) {
             system("cls");
             return status;
         }
-
-        _getch();
-        system("cls");
     }
-	return GameStatus::Exit;
 }
 
 void MenuHandler::upArrowClicked()
