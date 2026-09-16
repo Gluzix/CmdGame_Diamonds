@@ -1,13 +1,26 @@
 #include "Enemy.h"
+#include <cstdlib>
 #include <math.h>
 
-Enemy::Enemy(const Coordinates& beginCoordinates, int speed, int recognitionDistance)
+Enemy::Enemy(const Coordinates& beginCoordinates, int moveEveryNTicks, int recognitionDistance)
     : coordinates(beginCoordinates)
     , oldCoordinates(beginCoordinates)
-    , speed(speed)
+    , moveEveryNTicks(moveEveryNTicks)
     , recognitionDistance(recognitionDistance)
 {
 
+}
+
+bool Enemy::shouldMove()
+{
+    tickCounter++;
+
+    if (tickCounter >= moveEveryNTicks) {
+        tickCounter = 0;
+        return true;
+    }
+
+    return false;
 }
 
 void Enemy::updatePosition()
@@ -25,13 +38,6 @@ void Enemy::updatePosition()
     case Way::Right:
         coordinates.x++;
         break;
-    }
-
-    if (speed == 4) {
-        speed = 0;
-    }
-    else {
-        speed++;
     }
 }
 
@@ -73,14 +79,43 @@ bool Enemy::isPlayerNear(const Coordinates &playerCoordinates)
     int differenceX = abs(playerCoordinates.x - this->coordinates.x);
     int differenceY = abs(playerCoordinates.y - this->coordinates.y);
 
-    if (differenceX <= recognitionDistance || differenceY <= recognitionDistance) {
-        return true;
-    }
-
-	return false;
+    return differenceX <= recognitionDistance && differenceY <= recognitionDistance;
 }
 
 void Enemy::updateWay(Way way)
 {
     this->way = way;
+}
+
+void Enemy::reverseWay()
+{
+    switch (way) {
+    case Way::Up:
+        way = Way::Down;
+        break;
+    case Way::Down:
+        way = Way::Up;
+        break;
+    case Way::Left:
+        way = Way::Right;
+        break;
+    case Way::Right:
+        way = Way::Left;
+        break;
+    }
+}
+
+bool Enemy::hasMoved() const
+{
+    return coordinates != oldCoordinates;
+}
+
+bool Enemy::canChasePlayer() const
+{
+    return true;
+}
+
+void Enemy::chooseNewWay()
+{
+    way = static_cast<Way>(rand() % 4);
 }
