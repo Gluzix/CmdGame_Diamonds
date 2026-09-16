@@ -2,8 +2,9 @@
 #include <sstream>
 #include <windows.h>
 
-Punctation::Punctation(int maxPunctation)
+Punctation::Punctation(int maxPunctation, int row)
     : maxPunctation(maxPunctation)
+    , row(row)
 {
 
 }
@@ -18,10 +19,10 @@ void Punctation::show()
     std::stringstream ss;
     ss << "Diamonds: " << punctation << "/" << maxPunctation;
     HANDLE hOutput = GetStdHandle(STD_OUTPUT_HANDLE);
-    COORD coord = { 48,26 };
+    COORD coord = { 48, static_cast<SHORT>(row) };
     SetConsoleCursorPosition(hOutput, coord);
     std::string punctationStr = ss.str();
-    WriteConsoleA(hOutput, punctationStr.c_str(), punctationStr.length(), NULL, NULL);
+    WriteConsoleA(hOutput, punctationStr.c_str(), static_cast<DWORD>(punctationStr.length()), NULL, NULL);
 }
 
 int Punctation::get()

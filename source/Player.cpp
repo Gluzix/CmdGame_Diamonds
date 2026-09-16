@@ -1,7 +1,5 @@
 #include "Player.h"
-#include <iostream>
-#include <windows.h>
-#include <cstdlib>
+#include "Console.h"
 
 Player::Player(const Coordinates& coords)
     : coordinates(coords)
@@ -41,16 +39,7 @@ const Coordinates& Player::pos()
 
 void Player::updatePlayer()
 {
-    const char *buff=" ";
-    const char *enem="@";
-    HANDLE hOutput = GetStdHandle(STD_OUTPUT_HANDLE);
-    COORD currentCoords = { coordinates.x, coordinates.y };
-    COORD oldCoords = { oldCoordinates.x, oldCoordinates.y };
-    SetConsoleCursorPosition(hOutput, oldCoords);
-    WriteConsoleA(hOutput, buff, 1, NULL,NULL);
-    SetConsoleTextAttribute(hOutput, FOREGROUND_INTENSITY | FOREGROUND_GREEN );
-    SetConsoleCursorPosition(hOutput, currentCoords);
-    WriteConsoleA(hOutput, enem, 1, NULL,NULL);
-    SetConsoleTextAttribute ( hOutput, FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+    clearCharAt(oldCoordinates);
+    drawCharAt(coordinates, '@', FOREGROUND_INTENSITY | FOREGROUND_GREEN);
     oldCoordinates = coordinates;
 }

@@ -3,7 +3,7 @@
 class Punctation
 {
 public:
-    Punctation(int maxPunctation);
+    Punctation(int maxPunctation, int row);
 
     void update();
     void show();
@@ -12,4 +12,5 @@ public:
 private:
     int punctation{0};
     int maxPunctation;
+    int row;
 };

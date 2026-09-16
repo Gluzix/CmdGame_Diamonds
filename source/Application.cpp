@@ -11,9 +11,7 @@ Application::Application()
 
 void Application::run()
 {
-    srand(time(NULL));
-
-    int way = 0;
+    srand(static_cast<unsigned int>(time(nullptr)));
 
     MenuHandler menuHandler;
 
