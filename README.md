@@ -64,7 +64,7 @@ Your progress is printed just below the map as `Diamonds: n/total`.
 
 ## Building and running
 
-The project builds with CMake (3.20 or newer) and MSVC toolset v143 — C++17, x64. It is
+The project builds with CMake (3.20 or newer) and MSVC toolset v143 — C++20, x64. It is
 Windows-only: it talks to the Win32 console API directly, and configuring it on any other
 platform stops with an error instead of failing halfway through the compile.
 

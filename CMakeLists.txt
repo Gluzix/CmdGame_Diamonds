@@ -64,7 +64,7 @@ source_group("Header Files" FILES ${DIAMONDS_HEADERS})
 target_include_directories(Diamonds_CmdGame PRIVATE header)
 
 set_target_properties(Diamonds_CmdGame PROPERTIES
-    CXX_STANDARD 17
+    CXX_STANDARD 20
     CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
     VS_DEBUGGER_WORKING_DIRECTORY "$<TARGET_FILE_DIR:Diamonds_CmdGame>"
