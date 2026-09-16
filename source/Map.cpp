@@ -4,9 +4,39 @@
 #include <windows.h>
 #include <stdlib.h>
 
-Map::Map()
+namespace
 {
+    constexpr WORD defaultColour = FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE;
 
+    // The single source of truth for every map glyph's colour: drawMap() paints the board
+    // with it and Map::redrawTile() repaints one cell with it.
+    WORD colourFor(char ch)
+    {
+        switch (ch) {
+        case '*':
+            return FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY;
+        case '&':
+            return FOREGROUND_RED | FOREGROUND_INTENSITY;
+        case '^':
+            return FOREGROUND_BLUE | FOREGROUND_INTENSITY;
+        case '%':
+            return FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY;
+        case '#':
+            return FOREGROUND_INTENSITY;
+        case '@':
+            return FOREGROUND_GREEN | FOREGROUND_INTENSITY;
+        default:
+            return defaultColour;
+        }
+    }
+
+    void printTile(char ch)
+    {
+        HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
+        SetConsoleTextAttribute(h, colourFor(ch));
+        std::cout << ch;
+        SetConsoleTextAttribute(h, defaultColour);
+    }
 }
 
 void Map::drawMap()
@@ -14,35 +44,19 @@ void Map::drawMap()
     int width = 0;
     int height = 0;
 
-    for (std::string line : fileReader.getContent()) {
+    for (const std::string& line : fileReader.getContent()) {
         for (const char& ch : line) {
             if (ch == '*') {
                 points++;
-                drawAsteriks();
             }
             else if (ch == '$') {
                 barrierPos.push_back(Coordinates(width, height));
-                drawDollar();
-            }
-            else if (ch == '&') {
-                drawAmpersand();
-            }
-            else if (ch == '#') {
-                drawHashtag();
             }
             else if (ch == '@') {
                 playerPos = Coordinates(width, height);
-                drawCommercialAt();
             }
-            else if (ch == '^') {
-                drawCaret();
-            }
-            else if (ch == '%') {
-                drawPercent();
-            }
-            else {
-                std::cout << ch;
-            }
+
+            printTile(ch);
             width++;
         }
         width = 0;
@@ -112,8 +126,36 @@ void Map::removeBarriers()
 {
     for (const Coordinates& coords : barrierPos) {
         fileReader.modifyContent(coords.y, coords.x, ' ');
-        clearCharAt(coords);
+        redrawTile(coords);
     }
+}
+
+void Map::clearEnemySpawns()
+{
+    const int height = static_cast<int>(fileReader.getContent().size());
+
+    for (int y = 0; y < height; y++) {
+        const int width = static_cast<int>(fileReader.getContent()[y].size());
+
+        for (int x = 0; x < width; x++) {
+            const char ch = fileReader.getContent()[y][x];
+
+            if (ch == '&' || ch == '^' || ch == '%') {
+                fileReader.modifyContent(y, x, ' ');
+            }
+        }
+    }
+}
+
+void Map::redrawTile(const Coordinates& coords) const
+{
+    if (!isInside(coords)) {
+        return;
+    }
+
+    const char ch = charAt(coords);
+
+    drawCharAt(coords, ch, colourFor(ch));
 }
 
 bool Map::hasPlayerFinished(const Coordinates &coords) const
@@ -126,57 +168,4 @@ bool Map::hasPlayerFinished(const Coordinates &coords) const
 const FileReader& Map::getFileReader()
 {
     return fileReader;
-}
-
-void Map::drawAsteriks()
-{
-    HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
-    SetConsoleTextAttribute(h, FOREGROUND_RED | FOREGROUND_INTENSITY | FOREGROUND_BLUE);
-    std::cout << '*';
-    SetConsoleTextAttribute(h, FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-}
-
-void Map::drawDollar()
-{
-    std::cout << '$';
-}
-
-void Map::drawAmpersand()
-{
-    HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
-    SetConsoleTextAttribute(h, FOREGROUND_RED | FOREGROUND_INTENSITY);
-    std::cout << '&';
-    SetConsoleTextAttribute(h, FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-}
-
-void Map::drawHashtag()
-{
-    HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
-    SetConsoleTextAttribute(h, FOREGROUND_INTENSITY);
-    std::cout << '#';
-    SetConsoleTextAttribute(h, FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-}
-
-void Map::drawCommercialAt()
-{
-    HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
-    SetConsoleTextAttribute(h, FOREGROUND_INTENSITY | FOREGROUND_GREEN);
-    std::cout << '@';
-    SetConsoleTextAttribute(h, FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-}
-
-void Map::drawCaret()
-{
-    HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
-    SetConsoleTextAttribute(h, FOREGROUND_INTENSITY | FOREGROUND_BLUE);
-    std::cout << '^';
-    SetConsoleTextAttribute(h, FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-}
-
-void Map::drawPercent()
-{
-    HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
-    SetConsoleTextAttribute(h, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
-    std::cout << '%';
-    SetConsoleTextAttribute(h, FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 }
