@@ -1,0 +1,22 @@
+# Builds the game the same way a developer does: CMake with the Visual Studio
+# 2022 generator, both configurations, using the presets from CMakePresets.json.
+# There are no tests, so there is no test step.
+name: CMake Windows
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Configure
+        run: cmake --preset windows-msvc
+      - name: Build Debug
+        run: cmake --build --preset windows-msvc-debug
+      - name: Build Release
+        run: cmake --build --preset windows-msvc-release
