@@ -1,6 +1,5 @@
 #include "Map.h"
 #include "Console.h"
-#include <iostream>
 #include <windows.h>
 #include <stdlib.h>
 
@@ -29,14 +28,6 @@ namespace
             return defaultColour;
         }
     }
-
-    void printTile(char ch)
-    {
-        HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
-        SetConsoleTextAttribute(h, colourFor(ch));
-        std::cout << ch;
-        SetConsoleTextAttribute(h, defaultColour);
-    }
 }
 
 void Map::drawMap()
@@ -46,17 +37,22 @@ void Map::drawMap()
 
     for (const std::string& line : fileReader.getContent()) {
         for (const char& ch : line) {
+            const Coordinates coords(width, height);
+
             if (ch == '*') {
                 points++;
             }
             else if (ch == '$') {
-                barrierPos.push_back(Coordinates(width, height));
+                barrierPos.push_back(coords);
             }
             else if (ch == '@') {
-                playerPos = Coordinates(width, height);
+                playerPos = coords;
             }
 
-            printTile(ch);
+            // Every cell is placed by hand. Printing the board as one long stream only
+            // lined up while the console happened to be exactly as wide as the map, and
+            // wrapped a row early - each row further left than the last - on any other.
+            drawCharAt(coords, ch, colourFor(ch));
             width++;
         }
         width = 0;

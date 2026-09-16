@@ -3,12 +3,29 @@
 #include <iostream>
 #include <time.h>
 #include <Windows.h>
+#include "Console.h"
+#include "FileReader.h"
+#include "Map.h"
 #include "MenuHandler.h"
 #include "GameHandler.h"
+
+namespace
+{
+    // One column and two rows more than the map: the score line goes on the row directly
+    // under the board, and nothing is ever written into the last column or the last row, so
+    // the console has no reason to wrap or scroll while a round is on screen.
+    constexpr int spareColumns = 1;
+    constexpr int spareRows = 2;
+}
 
 void Application::run()
 {
     srand(static_cast<unsigned int>(time(nullptr)));
+
+    // The board is drawn at fixed console coordinates, so the console has to be big enough
+    // to hold it before anything is printed. The map is the largest thing the game shows.
+    const FileReader mapReader(mapFilePath);
+    prepareConsole(mapReader.getWidth() + spareColumns, mapReader.getHeight() + spareRows);
 
     MenuHandler menuHandler;
 
@@ -29,7 +46,10 @@ void Application::run()
             _getch();
         }
         else {
-            return;
+            break;
         }
     }
+
+    // The console belongs to whoever started the game, so it goes back the way it was.
+    restoreConsole();
 }
