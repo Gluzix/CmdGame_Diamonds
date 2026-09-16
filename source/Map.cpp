@@ -1,4 +1,5 @@
 #include "Map.h"
+#include "Console.h"
 #include <iostream>
 #include <windows.h>
 #include <stdlib.h>
@@ -24,9 +25,8 @@ void Map::drawMap()
                 drawDollar();
             }
             else if (ch == '&') {
-                slowerEnemiesPos.push_back(Coordinates(width, height));
                 drawAmpersand();
-            } 
+            }
             else if (ch == '#') {
                 drawHashtag();
             }
@@ -35,8 +35,10 @@ void Map::drawMap()
                 drawCommercialAt();
             }
             else if (ch == '^') {
-                fasterEnemiesPos.push_back(Coordinates(width, height));
                 drawCaret();
+            }
+            else if (ch == '%') {
+                drawPercent();
             }
             else {
                 std::cout << ch;
@@ -48,31 +50,37 @@ void Map::drawMap()
     }
 }
 
-bool Map::isObstacleForEnemy(const Coordinates& coords, int i)
+bool Map::isInside(const Coordinates& coords) const
 {
-    if(fileReader.getContent()[coords.y][coords.x] == ' ' || fileReader.getContent()[coords.y][coords.x] == '@') {
-        slowerEnemiesPos[i] = coords;
-        return false;
+    const std::vector<std::string>& content = fileReader.getContent();
+
+    return coords.y >= 0
+        && coords.y < static_cast<int>(content.size())
+        && coords.x >= 0
+        && coords.x < static_cast<int>(content[coords.y].size());
+}
+
+char Map::charAt(const Coordinates& coords) const
+{
+    if (!isInside(coords)) {
+        return '#';
     }
-    return true;
+
+    return fileReader.getContent()[coords.y][coords.x];
 }
 
-bool Map::isObstacleForPlayer(const Coordinates& coords)
+bool Map::isObstacleForEnemy(const Coordinates& coords) const
 {
-    if (fileReader.getContent()[coords.y][coords.x] == ' ' || fileReader.getContent()[coords.y][coords.x] == '*' ) {
-        return false;
-    }
-    return true;
+    const char ch = charAt(coords);
+
+    return !(ch == ' ' || ch == '*' || ch == '@');
 }
 
-const Coordinates& Map::getSlowerEnemyCoords(int index)
+bool Map::isObstacleForPlayer(const Coordinates& coords) const
 {
-    return slowerEnemiesPos[index];
-}
+    const char ch = charAt(coords);
 
-const Coordinates& Map::getFasterEnemyCoords(int index)
-{
-    return fasterEnemiesPos[index];
+    return !(ch == ' ' || ch == '*');
 }
 
 const Coordinates& Map::getPlayerCoords()
@@ -82,7 +90,7 @@ const Coordinates& Map::getPlayerCoords()
 
 bool Map::hasPlayerTookDiamond(const Coordinates& coords)
 {
-    if (fileReader.getContent()[coords.y][coords.x] == '*')
+    if (charAt(coords) == '*')
     {
         fileReader.modifyContent(coords.y, coords.x, ' ');
         return true;
@@ -90,29 +98,9 @@ bool Map::hasPlayerTookDiamond(const Coordinates& coords)
     else return false;
 }
 
-bool Map::hasPlayerSwitchedGate(const Coordinates& coords)
+bool Map::hasPlayerSwitchedGate(const Coordinates& coords) const
 {
-    if (fileReader.getContent()[coords.y][coords.x] == 'S')
-    {
-        return true;
-    }
-    else return false;
-}
-
-bool Map::isGameLost(const Coordinates& coords)
-{
-    for (const Coordinates& enemyCords : fasterEnemiesPos) {
-        if (coords == enemyCords) {
-            return true;
-        }
-    }
-
-    for (const Coordinates& enemyCords : slowerEnemiesPos) {
-        if (coords == enemyCords) {
-            return true;
-        }
-    }
-    return false;
+    return charAt(coords) == 'S';
 }
 
 int Map::getPoints()
@@ -123,23 +111,16 @@ int Map::getPoints()
 void Map::removeBarriers()
 {
     for (const Coordinates& coords : barrierPos) {
-        fileReader.modifyContent(coords.x, coords.y, ' ');
-        COORD coord = { static_cast<short>(coords.x), static_cast<short>(coords.y) };
-        HANDLE hOutput = GetStdHandle(STD_OUTPUT_HANDLE);
-        SetConsoleCursorPosition(hOutput, coord);
-        const char* buff = " ";
-        WriteConsoleA(hOutput, buff, 1, NULL, NULL);
+        fileReader.modifyContent(coords.y, coords.x, ' ');
+        clearCharAt(coords);
     }
 }
 
-bool Map::hasPlayerFinished(const Coordinates &coords)
+bool Map::hasPlayerFinished(const Coordinates &coords) const
 {
-    if ((fileReader.getContent()[coords.y][coords.x] == 'O')
-        || (fileReader.getContent()[coords.y][coords.x] == 'U')
-        || (fileReader.getContent()[coords.y][coords.x] == 'T')) {
-        return true;
-    }
-    return false;
+    const char ch = charAt(coords);
+
+    return ch == 'O' || ch == 'U' || ch == 'T';
 }
 
 const FileReader& Map::getFileReader()
@@ -189,5 +170,13 @@ void Map::drawCaret()
     HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(h, FOREGROUND_INTENSITY | FOREGROUND_BLUE);
     std::cout << '^';
+    SetConsoleTextAttribute(h, FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+}
+
+void Map::drawPercent()
+{
+    HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(h, FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY);
+    std::cout << '%';
     SetConsoleTextAttribute(h, FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 }
