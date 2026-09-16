@@ -5,17 +5,24 @@
 FileReader::FileReader(const std::string& pathToFile)
 {
     std::fstream fstream(pathToFile, std::ios_base::in);
-    std::string tempLine;
 
     if (!fstream) {
-        std::cout << "Couldn't open the file";
+        std::cerr << "Couldn't open the file: " << pathToFile << std::endl;
+        return;
     }
+
+    std::string tempLine;
 
     while (std::getline(fstream, tempLine)) {
         readFile.push_back(tempLine);
         height++;
+
+        const int lineWidth = static_cast<int>(tempLine.size());
+
+        if (lineWidth > width) {
+            width = lineWidth;
+        }
     }
-    width = tempLine.size();
 }
 
 const std::vector<std::string> &FileReader::getContent() const

@@ -7,5 +7,5 @@ class SlowEnemy : public Enemy
 public:
     SlowEnemy(const Coordinates &beginCoordinates);
 
-    virtual void updateConsoleCoordinates();
+    void updateConsoleCoordinates() override;
 };
