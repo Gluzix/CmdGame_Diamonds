@@ -64,22 +64,36 @@ Your progress is printed just below the map as `Diamonds: n/total`.
 
 ## Building and running
 
-The project is a Visual Studio 2022 solution (`Diamonds_CmdGame.sln`), MSVC toolset v143,
-C++17, x64. It is Windows-only — it talks to the Win32 console API directly.
+The project builds with CMake (3.20 or newer) and MSVC toolset v143 — C++17, x64. It is
+Windows-only: it talks to the Win32 console API directly, and configuring it on any other
+platform stops with an error instead of failing halfway through the compile.
 
-Open the solution in Visual Studio and press <kbd>F5</kbd>, or build it from a command
-line:
+`CMakePresets.json` carries the generator and the architecture, so the command line is
+short:
 
 ```
-"C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\MSBuild.exe" Diamonds_CmdGame.sln -p:Configuration=Debug -p:Platform=x64
+cmake --preset windows-msvc
+cmake --build --preset windows-msvc-debug
 ```
 
-**Start the game from the repository root.** It loads `resources/Logo.txt`,
-`resources/Map.txt`, `resources/Win.txt` and `resources/Loose.txt` through relative paths,
-so the working directory has to be the folder those `resources` live in. Double-clicking
-`x64\Debug\Diamonds_CmdGame.exe` from inside `x64\Debug` will not find them. Visual
-Studio's debugger defaults to the project directory, which is the repository root, so
-<kbd>F5</kbd> works out of the box.
+Swap the last line for `--preset windows-msvc-release` to get the optimised build. Both
+land in `build\`, which holds a single Visual Studio project serving every configuration.
+The same thing spelled out, without presets:
+
+```
+cmake -B build -G "Visual Studio 17 2022" -A x64
+cmake --build build --config Debug
+cmake --build build --config Release
+```
+
+Visual Studio 2022 opens the repository directly — **File → Open → Folder**. It reads
+`CMakePresets.json`, offers `windows-msvc` in the configuration dropdown and runs the game
+on <kbd>F5</kbd>.
+
+The game loads `resources/Logo.txt`, `resources/Map.txt`, `resources/Win.txt` and
+`resources/Loose.txt` through relative paths, so every build copies `resources/` next to
+the executable it just produced. `build\Debug\Diamonds_CmdGame.exe` therefore runs from
+anywhere, including a double-click in Explorer.
 
 One more thing worth knowing: the map is printed character by character with no line
 breaks of its own, and nothing in the code resizes the console. The rows only line up if
@@ -88,10 +102,11 @@ the console buffer is as wide as the map — 125 columns for the bundled one.
 ## Repository layout
 
 ```
-header/      class declarations
-source/      their implementations
-resources/   the map, the logo and the win/lose screens, all plain text
-main.cpp     creates an Application and runs it
+header/          class declarations
+source/          their implementations
+resources/       the map, the logo and the win/lose screens, all plain text
+main.cpp         creates an Application and runs it
+CMakeLists.txt   the build: the file list, the compiler settings and the resource copy
 ```
 
 * **`Application`** — the outer loop: show the menu, and start a game, the About screen or
@@ -118,3 +133,7 @@ main.cpp     creates an Application and runs it
 reads it at startup: it counts the diamonds for the score, places the player at `@`, and
 creates one enemy for every `&`, `^` and `%` it finds. A new map needs no code change as
 long as it uses the same characters.
+
+What it does need is a rebuild. The game reads the copy of `resources/` that sits next to
+the executable, so an edit to `resources/Map.txt` only shows up after the next build — or
+edit `build\Debug\resources\Map.txt` directly and start the game again.
