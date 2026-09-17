@@ -1,16 +1,16 @@
 #pragma once
 
-class Punctation
+class Score
 {
 public:
-    Punctation(int maxPunctation, int row);
+    Score(int total, int row);
 
     void update();
     void show() const;
     int get() const;
 
 private:
-    int punctation{0};
-    int maxPunctation;
+    int collected{0};
+    int total;
     int row;
 };

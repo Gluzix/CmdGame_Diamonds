@@ -2,7 +2,7 @@
 #include "FastEnemy.h"
 #include "FastestEnemy.h"
 #include "Player.h"
-#include "Punctation.h"
+#include "Score.h"
 #include "SlowEnemy.h"
 #include <conio.h>
 #include <cstdlib>
@@ -27,8 +27,8 @@ void GameHandler::run()
     // is repainted as a second player the moment the real one steps off it.
     map.clearSpawnMarkers();
 
-    Punctation punctation(map.getPoints(), map.getFileReader().getHeight());
-    punctation.show();
+    Score score(map.getPoints(), map.getFileReader().getHeight());
+    score.show();
 
     Player player(map.getPlayerCoords());
 
@@ -60,12 +60,12 @@ void GameHandler::run()
         // isObstacleForPlayer() treats 'S', 'O', 'U' and 'T' as walls, so the lever and
         // the exit have to be answered before the position is restored. The player bumps
         // into that tile to use it and bounces back.
-        if (map.hasPlayerTookDiamond(player.pos())) {
-            punctation.update();
-            punctation.show();
+        if (map.hasPlayerTakenDiamond(player.pos())) {
+            score.update();
+            score.show();
         }
 
-        const bool hasEveryDiamond = punctation.get() == map.getPoints();
+        const bool hasEveryDiamond = score.get() == map.getPoints();
 
         if (map.hasPlayerFinished(player.pos()) && hasEveryDiamond) {
             hasWon = true;
@@ -102,7 +102,7 @@ void GameHandler::run()
         Sleep(frameTimeMs);
     }
 
-    showEndScreen(hasWon ? "resources/Win.txt" : "resources/Loose.txt");
+    showEndScreen(hasWon ? "resources/Win.txt" : "resources/Lose.txt");
 }
 
 void GameHandler::prepareEnemies()

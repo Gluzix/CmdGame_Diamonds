@@ -92,7 +92,7 @@ Visual Studio opens the repository directly — **File → Open → Folder**. It
 on <kbd>F5</kbd>.
 
 The game loads `resources/Logo.txt`, `resources/Map.txt`, `resources/Win.txt` and
-`resources/Loose.txt` through relative paths, so every build copies `resources/` next to
+`resources/Lose.txt` through relative paths, so every build copies `resources/` next to
 the executable it just produced. `build\Debug\Diamonds_CmdGame.exe` therefore runs from
 anywhere, including a double-click in Explorer.
 
@@ -123,7 +123,7 @@ CMakeLists.txt   the build: the file list, the compiler settings and the resourc
   and glyph.
 * **`FileReader`** — reads a text file into a vector of lines, and lets the map edit a
   single character of it.
-* **`Punctation`** — the diamond counter shown below the map.
+* **`Score`** — the diamond counter shown below the map.
 * **`Console`** — the small Win32 helpers: sizing the console at startup, and drawing or
   clearing one character at a set position.
 

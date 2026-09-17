@@ -26,7 +26,7 @@ set(DIAMONDS_SOURCES
     source/Menu.cpp
     source/MenuHandler.cpp
     source/Player.cpp
-    source/Punctation.cpp
+    source/Score.cpp
     source/SlowEnemy.cpp
 )
 
@@ -43,7 +43,7 @@ set(DIAMONDS_HEADERS
     header/Menu.h
     header/MenuHandler.h
     header/Player.h
-    header/Punctation.h
+    header/Score.h
     header/SlowEnemy.h
 )
 

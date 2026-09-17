@@ -98,7 +98,7 @@ const Coordinates& Map::getPlayerCoords() const
     return playerPos;
 }
 
-bool Map::hasPlayerTookDiamond(const Coordinates& coords)
+bool Map::hasPlayerTakenDiamond(const Coordinates& coords)
 {
     if (charAt(coords) == '*')
     {

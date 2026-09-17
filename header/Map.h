@@ -15,7 +15,7 @@ class Map
 
         const Coordinates& getPlayerCoords() const;
 
-        bool hasPlayerTookDiamond(const Coordinates& coords);
+        bool hasPlayerTakenDiamond(const Coordinates& coords);
         bool hasPlayerSwitchedGate(const Coordinates& coords) const;
         int getPoints() const;
         void removeBarriers();
