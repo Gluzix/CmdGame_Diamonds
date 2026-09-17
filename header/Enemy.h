@@ -13,16 +13,16 @@ public:
     void updatePosition();
     void backToOldPosition();
     void tryToFollowPlayer(const Coordinates& playerCoordinates);
-    bool isPlayerNear(const Coordinates& playerCoordinates);
-    void updateWay(Way way);
+    bool isPlayerNear(const Coordinates& playerCoordinates) const;
+    void updateWay(Way newWay);
     void reverseWay();
     bool hasMoved() const;
+    Coordinates getCoords() const;
 
     virtual bool canChasePlayer() const;
     virtual void chooseNewWay();
 
     virtual void updateConsoleCoordinates() = 0;
-    virtual Coordinates getCoords();
 
 protected:
     Coordinates coordinates{0, 0};
@@ -30,5 +30,5 @@ protected:
     Way way{Way::Up};
     const int moveEveryNTicks;
     int tickCounter{ 0 };
-    int recognitionDistance;
+    const int recognitionDistance;
 };

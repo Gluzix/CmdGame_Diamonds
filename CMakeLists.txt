@@ -26,7 +26,7 @@ set(DIAMONDS_SOURCES
     source/Menu.cpp
     source/MenuHandler.cpp
     source/Player.cpp
-    source/Punctation.cpp
+    source/Score.cpp
     source/SlowEnemy.cpp
 )
 
@@ -43,7 +43,7 @@ set(DIAMONDS_HEADERS
     header/Menu.h
     header/MenuHandler.h
     header/Player.h
-    header/Punctation.h
+    header/Score.h
     header/SlowEnemy.h
 )
 
@@ -80,12 +80,13 @@ target_compile_definitions(Diamonds_CmdGame PRIVATE
     _UNICODE
 )
 
-# ConformanceMode=true, SDLCheck=true and WarningLevel=Level3 from the old
-# project. /W3 has to be passed explicitly: policy CMP0092, which
+# ConformanceMode=true and SDLCheck=true came from the old project, which built
+# at WarningLevel=Level3. The tree is clean at /W4, so that is the level it gets.
+# Either way it has to be passed explicitly: policy CMP0092, which
 # cmake_minimum_required(VERSION 3.20) turns on, drops the /W3 that CMake used
 # to put in CMAKE_CXX_FLAGS by default, and MSVC falls back to /W1 without it.
 if(MSVC)
-    target_compile_options(Diamonds_CmdGame PRIVATE /permissive- /sdl /W3)
+    target_compile_options(Diamonds_CmdGame PRIVATE /permissive- /sdl /W4)
 endif()
 
 # WholeProgramOptimization was on for Release only. Guarded, so configuring

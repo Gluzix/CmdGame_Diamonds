@@ -1,21 +1,28 @@
 #include "Menu.h"
+#include <array>
+#include <cstdlib>
 #include <iostream>
-#include <fstream>
-#include <Windows.h>
+#include <string>
+#include <string_view>
+
+namespace
+{
+    constexpr std::array<std::string_view, 3> options{ "Start Game", "About Creators", "Exit" };
+}
 
 void Menu::show(int index) const
 {
-    switch (index)
-    {
-    case 0:
-        chooseStart();
-        break;
-    case 1:
-        chooseAbout();
-        break;
-    case 2:
-        chooseExit();
-        break;
+    showReadMenuOnScreen();
+
+    for (int option = 0; option < static_cast<int>(options.size()); option++) {
+        std::cout << std::endl;
+
+        if (option == index) {
+            std::cout << ">>" << options[option] << "<<" << std::endl;
+        }
+        else {
+            std::cout << options[option] << std::endl;
+        }
     }
 }
 
@@ -26,40 +33,4 @@ void Menu::showReadMenuOnScreen() const
     for (const std::string& element : fileReader.getContent()) {
         std::cout << element << std::endl;
     }
-}
-
-void Menu::chooseStart() const
-{
-    showReadMenuOnScreen();
-
-    std::cout << std::endl;
-    std::cout << ">>Start Game<<" << std::endl;
-    std::cout << std::endl;
-    std::cout << "About Creators" << std::endl;
-    std::cout << std::endl;
-    std::cout << "Exit" << std::endl;
-}
-
-void Menu::chooseAbout() const
-{
-    showReadMenuOnScreen();
-
-    std::cout << std::endl;
-    std::cout << "Start Game" << std::endl;
-    std::cout << std::endl;
-    std::cout << ">>About Creators<<" << std::endl;
-    std::cout << std::endl;
-    std::cout << "Exit" << std::endl;
-}
-
-void Menu::chooseExit() const
-{
-    showReadMenuOnScreen();
-
-    std::cout << std::endl;
-    std::cout << "Start Game" << std::endl;
-    std::cout << std::endl;
-    std::cout << "About Creators" << std::endl;
-    std::cout << std::endl;
-    std::cout << ">>Exit<<" << std::endl;
 }

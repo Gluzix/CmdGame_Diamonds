@@ -59,7 +59,7 @@ namespace
     // opened back up over the new buffer afterwards. That holds in both directions.
     bool shrinkWindow(HANDLE hOutput)
     {
-        const SMALL_RECT smallestWindow = { 0, 0, 1, 1 };
+        const SMALL_RECT smallestWindow = { .Left = 0, .Top = 0, .Right = 1, .Bottom = 1 };
 
         return SetConsoleWindowInfo(hOutput, TRUE, &smallestWindow) != FALSE;
     }
@@ -88,7 +88,7 @@ namespace
 
         SetConsoleTextAttribute(hOutput, colour);
         SetConsoleCursorPosition(hOutput, consoleCoords);
-        WriteConsoleA(hOutput, &character, 1, NULL, NULL);
+        WriteConsoleA(hOutput, &character, 1, nullptr, nullptr);
         SetConsoleTextAttribute(hOutput, defaultColour);
     }
 }
@@ -97,7 +97,7 @@ void prepareConsole(int columns, int rows)
 {
     const HANDLE hOutput = GetStdHandle(STD_OUTPUT_HANDLE);
 
-    if (hOutput == NULL || hOutput == INVALID_HANDLE_VALUE) {
+    if (hOutput == nullptr || hOutput == INVALID_HANDLE_VALUE) {
         return;
     }
 
@@ -112,8 +112,8 @@ void prepareConsole(int columns, int rows)
     setCursorVisible(hOutput, FALSE);
 
     const COORD wantedBuffer = {
-        asBufferSize(columns, minimumColumns),
-        asBufferSize(rows, minimumRows)
+        .X = asBufferSize(columns, minimumColumns),
+        .Y = asBufferSize(rows, minimumRows)
     };
 
     const bool windowShrunk = shrinkWindow(hOutput);
@@ -143,10 +143,10 @@ void prepareConsole(int columns, int rows)
     }
 
     const SMALL_RECT window = {
-        0,
-        0,
-        static_cast<SHORT>(windowColumns - 1),
-        static_cast<SHORT>(windowRows - 1)
+        .Left = 0,
+        .Top = 0,
+        .Right = static_cast<SHORT>(windowColumns - 1),
+        .Bottom = static_cast<SHORT>(windowRows - 1)
     };
 
     if (!openWindow(hOutput, window)) {
@@ -166,7 +166,7 @@ void restoreConsole()
 
     const HANDLE hOutput = GetStdHandle(STD_OUTPUT_HANDLE);
 
-    if (hOutput == NULL || hOutput == INVALID_HANDLE_VALUE) {
+    if (hOutput == nullptr || hOutput == INVALID_HANDLE_VALUE) {
         return;
     }
 

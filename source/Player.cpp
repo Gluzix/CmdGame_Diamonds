@@ -32,7 +32,7 @@ void Player::restoreCoordinates()
     coordinates = oldCoordinates;
 }
 
-const Coordinates& Player::pos()
+Coordinates Player::pos() const
 {
     return coordinates;
 }

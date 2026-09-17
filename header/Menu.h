@@ -1,6 +1,5 @@
 #pragma once
 
-#include <string>
 #include <vector>
 #include "FileReader.h"
 
@@ -14,9 +13,6 @@ public:
 
 private:
     void showReadMenuOnScreen() const;
-    void chooseStart() const;
-    void chooseAbout() const;
-    void chooseExit() const;
 
     FileReader fileReader{"resources/Logo.txt"};
 };

@@ -1,5 +1,6 @@
 #include "Application.h"
 #include <conio.h>
+#include <cstdlib>
 #include <iostream>
 #include <time.h>
 #include <Windows.h>

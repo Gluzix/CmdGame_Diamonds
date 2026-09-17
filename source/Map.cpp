@@ -1,7 +1,7 @@
 #include "Map.h"
 #include "Console.h"
+#include <string>
 #include <windows.h>
-#include <stdlib.h>
 
 namespace
 {
@@ -32,12 +32,12 @@ namespace
 
 void Map::drawMap()
 {
-    int width = 0;
-    int height = 0;
+    int x = 0;
+    int y = 0;
 
     for (const std::string& line : fileReader.getContent()) {
         for (const char& ch : line) {
-            const Coordinates coords(width, height);
+            const Coordinates coords(x, y);
 
             if (ch == '*') {
                 points++;
@@ -53,10 +53,10 @@ void Map::drawMap()
             // lined up while the console happened to be exactly as wide as the map, and
             // wrapped a row early - each row further left than the last - on any other.
             drawCharAt(coords, ch, colourFor(ch));
-            width++;
+            x++;
         }
-        width = 0;
-        height++;
+        x = 0;
+        y++;
     }
 }
 
@@ -93,16 +93,16 @@ bool Map::isObstacleForPlayer(const Coordinates& coords) const
     return !(ch == ' ' || ch == '*' || ch == '@');
 }
 
-const Coordinates& Map::getPlayerCoords()
+const Coordinates& Map::getPlayerCoords() const
 {
     return playerPos;
 }
 
-bool Map::hasPlayerTookDiamond(const Coordinates& coords)
+bool Map::hasPlayerTakenDiamond(const Coordinates& coords)
 {
     if (charAt(coords) == '*')
     {
-        fileReader.modifyContent(coords.y, coords.x, ' ');
+        fileReader.setCharAt(coords.y, coords.x, ' ');
         return true;
     }
     else return false;
@@ -113,7 +113,7 @@ bool Map::hasPlayerSwitchedGate(const Coordinates& coords) const
     return charAt(coords) == 'S';
 }
 
-int Map::getPoints()
+int Map::getPoints() const
 {
     return points;
 }
@@ -121,23 +121,25 @@ int Map::getPoints()
 void Map::removeBarriers()
 {
     for (const Coordinates& coords : barrierPos) {
-        fileReader.modifyContent(coords.y, coords.x, ' ');
+        fileReader.setCharAt(coords.y, coords.x, ' ');
         redrawTile(coords);
     }
 }
 
-void Map::clearEnemySpawns()
+void Map::clearSpawnMarkers()
 {
-    const int height = static_cast<int>(fileReader.getContent().size());
+    const std::vector<std::string>& content = fileReader.getContent();
+    const int height = static_cast<int>(content.size());
 
     for (int y = 0; y < height; y++) {
-        const int width = static_cast<int>(fileReader.getContent()[y].size());
+        const std::string& line = content[y];
+        const int width = static_cast<int>(line.size());
 
         for (int x = 0; x < width; x++) {
-            const char ch = fileReader.getContent()[y][x];
+            const char ch = line[x];
 
-            if (ch == '&' || ch == '^' || ch == '%') {
-                fileReader.modifyContent(y, x, ' ');
+            if (ch == '&' || ch == '^' || ch == '%' || ch == '@') {
+                fileReader.setCharAt(y, x, ' ');
             }
         }
     }
@@ -161,7 +163,7 @@ bool Map::hasPlayerFinished(const Coordinates &coords) const
     return ch == 'O' || ch == 'U' || ch == 'T';
 }
 
-const FileReader& Map::getFileReader()
+const FileReader& Map::getFileReader() const
 {
     return fileReader;
 }

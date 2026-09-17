@@ -1,6 +1,5 @@
 #include "Enemy.h"
 #include <cstdlib>
-#include <math.h>
 
 Enemy::Enemy(const Coordinates& beginCoordinates, int moveEveryNTicks, int recognitionDistance)
     : coordinates(beginCoordinates)
@@ -69,12 +68,12 @@ void Enemy::tryToFollowPlayer(const Coordinates& playerCoordinates)
     updatePosition();
 }
 
-Coordinates Enemy::getCoords()
+Coordinates Enemy::getCoords() const
 {
-	return coordinates;
+    return coordinates;
 }
 
-bool Enemy::isPlayerNear(const Coordinates &playerCoordinates)
+bool Enemy::isPlayerNear(const Coordinates &playerCoordinates) const
 {
     int differenceX = abs(playerCoordinates.x - this->coordinates.x);
     int differenceY = abs(playerCoordinates.y - this->coordinates.y);
@@ -82,9 +81,9 @@ bool Enemy::isPlayerNear(const Coordinates &playerCoordinates)
     return differenceX <= recognitionDistance && differenceY <= recognitionDistance;
 }
 
-void Enemy::updateWay(Way way)
+void Enemy::updateWay(Way newWay)
 {
-    this->way = way;
+    this->way = newWay;
 }
 
 void Enemy::reverseWay()
