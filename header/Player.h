@@ -17,7 +17,7 @@ public:
     void tryToMove(Way way);
     void updatePlayer();
     void restoreCoordinates();
-    const Coordinates& pos();
+    Coordinates pos() const;
 
 private:
     Coordinates coordinates;

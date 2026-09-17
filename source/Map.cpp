@@ -93,7 +93,7 @@ bool Map::isObstacleForPlayer(const Coordinates& coords) const
     return !(ch == ' ' || ch == '*' || ch == '@');
 }
 
-const Coordinates& Map::getPlayerCoords()
+const Coordinates& Map::getPlayerCoords() const
 {
     return playerPos;
 }
@@ -113,7 +113,7 @@ bool Map::hasPlayerSwitchedGate(const Coordinates& coords) const
     return charAt(coords) == 'S';
 }
 
-int Map::getPoints()
+int Map::getPoints() const
 {
     return points;
 }
@@ -161,7 +161,7 @@ bool Map::hasPlayerFinished(const Coordinates &coords) const
     return ch == 'O' || ch == 'U' || ch == 'T';
 }
 
-const FileReader& Map::getFileReader()
+const FileReader& Map::getFileReader() const
 {
     return fileReader;
 }

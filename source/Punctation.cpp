@@ -14,7 +14,7 @@ void Punctation::update()
     punctation++;
 }
 
-void Punctation::show()
+void Punctation::show() const
 {
     std::stringstream ss;
     ss << "Diamonds: " << punctation << "/" << maxPunctation;
@@ -25,7 +25,7 @@ void Punctation::show()
     WriteConsoleA(hOutput, punctationStr.c_str(), static_cast<DWORD>(punctationStr.length()), nullptr, nullptr);
 }
 
-int Punctation::get()
+int Punctation::get() const
 {
     return punctation;
 }

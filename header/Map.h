@@ -13,18 +13,18 @@ class Map
         bool isObstacleForEnemy(const Coordinates& coords) const;
         bool isObstacleForPlayer(const Coordinates& coords) const;
 
-        const Coordinates& getPlayerCoords();
+        const Coordinates& getPlayerCoords() const;
 
         bool hasPlayerTookDiamond(const Coordinates& coords);
         bool hasPlayerSwitchedGate(const Coordinates& coords) const;
-        int getPoints();
+        int getPoints() const;
         void removeBarriers();
         void clearSpawnMarkers();
         void redrawTile(const Coordinates& coords) const;
 
         bool hasPlayerFinished(const Coordinates& coords) const;
 
-        const FileReader& getFileReader();
+        const FileReader& getFileReader() const;
 
 private:
     bool isInside(const Coordinates& coords) const;

@@ -68,12 +68,12 @@ void Enemy::tryToFollowPlayer(const Coordinates& playerCoordinates)
     updatePosition();
 }
 
-Coordinates Enemy::getCoords()
+Coordinates Enemy::getCoords() const
 {
-	return coordinates;
+    return coordinates;
 }
 
-bool Enemy::isPlayerNear(const Coordinates &playerCoordinates)
+bool Enemy::isPlayerNear(const Coordinates &playerCoordinates) const
 {
     int differenceX = abs(playerCoordinates.x - this->coordinates.x);
     int differenceY = abs(playerCoordinates.y - this->coordinates.y);

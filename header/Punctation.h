@@ -6,8 +6,8 @@ public:
     Punctation(int maxPunctation, int row);
 
     void update();
-    void show();
-    int get();
+    void show() const;
+    int get() const;
 
 private:
     int punctation{0};
