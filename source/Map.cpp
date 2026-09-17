@@ -128,13 +128,15 @@ void Map::removeBarriers()
 
 void Map::clearSpawnMarkers()
 {
-    const int height = static_cast<int>(fileReader.getContent().size());
+    const std::vector<std::string>& content = fileReader.getContent();
+    const int height = static_cast<int>(content.size());
 
     for (int y = 0; y < height; y++) {
-        const int width = static_cast<int>(fileReader.getContent()[y].size());
+        const std::string& line = content[y];
+        const int width = static_cast<int>(line.size());
 
         for (int x = 0; x < width; x++) {
-            const char ch = fileReader.getContent()[y][x];
+            const char ch = line[x];
 
             if (ch == '&' || ch == '^' || ch == '%' || ch == '@') {
                 fileReader.setCharAt(y, x, ' ');
