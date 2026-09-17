@@ -19,10 +19,12 @@ void GameHandler::run()
     map.drawMap();
     prepareEnemies();
 
-    // drawMap() has already painted the '&', '^' and '%' glyphs, so the spawn markers can
-    // leave the map data now. Otherwise every spawn cell stays a phantom wall for the rest
-    // of the round: the player could never walk through it and no enemy could re-enter it.
-    map.clearEnemySpawns();
+    // drawMap() has already painted the '&', '^', '%' and '@' glyphs and recorded where the
+    // player starts, so the spawn markers can leave the map data now. Otherwise every enemy
+    // spawn cell stays a phantom wall for the rest of the round - the player could never
+    // walk through it and no enemy could re-enter it - and the '@' left on the start square
+    // is repainted as a second player the moment the real one steps off it.
+    map.clearSpawnMarkers();
 
     Punctation punctation(map.getPoints(), map.getFileReader().getHeight());
     punctation.show();

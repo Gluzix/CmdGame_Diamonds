@@ -20,7 +20,7 @@ class Map
         bool hasPlayerSwitchedGate(const Coordinates& coords) const;
         int getPoints();
         void removeBarriers();
-        void clearEnemySpawns();
+        void clearSpawnMarkers();
         void redrawTile(const Coordinates& coords) const;
 
         bool hasPlayerFinished(const Coordinates& coords) const;

@@ -126,7 +126,7 @@ void Map::removeBarriers()
     }
 }
 
-void Map::clearEnemySpawns()
+void Map::clearSpawnMarkers()
 {
     const int height = static_cast<int>(fileReader.getContent().size());
 
@@ -136,7 +136,7 @@ void Map::clearEnemySpawns()
         for (int x = 0; x < width; x++) {
             const char ch = fileReader.getContent()[y][x];
 
-            if (ch == '&' || ch == '^' || ch == '%') {
+            if (ch == '&' || ch == '^' || ch == '%' || ch == '@') {
                 fileReader.modifyContent(y, x, ' ');
             }
         }
