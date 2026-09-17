@@ -32,12 +32,12 @@ namespace
 
 void Map::drawMap()
 {
-    int width = 0;
-    int height = 0;
+    int x = 0;
+    int y = 0;
 
     for (const std::string& line : fileReader.getContent()) {
         for (const char& ch : line) {
-            const Coordinates coords(width, height);
+            const Coordinates coords(x, y);
 
             if (ch == '*') {
                 points++;
@@ -53,10 +53,10 @@ void Map::drawMap()
             // lined up while the console happened to be exactly as wide as the map, and
             // wrapped a row early - each row further left than the last - on any other.
             drawCharAt(coords, ch, colourFor(ch));
-            width++;
+            x++;
         }
-        width = 0;
-        height++;
+        x = 0;
+        y++;
     }
 }
 
@@ -102,7 +102,7 @@ bool Map::hasPlayerTookDiamond(const Coordinates& coords)
 {
     if (charAt(coords) == '*')
     {
-        fileReader.modifyContent(coords.y, coords.x, ' ');
+        fileReader.setCharAt(coords.y, coords.x, ' ');
         return true;
     }
     else return false;
@@ -121,7 +121,7 @@ int Map::getPoints() const
 void Map::removeBarriers()
 {
     for (const Coordinates& coords : barrierPos) {
-        fileReader.modifyContent(coords.y, coords.x, ' ');
+        fileReader.setCharAt(coords.y, coords.x, ' ');
         redrawTile(coords);
     }
 }
@@ -137,7 +137,7 @@ void Map::clearSpawnMarkers()
             const char ch = fileReader.getContent()[y][x];
 
             if (ch == '&' || ch == '^' || ch == '%' || ch == '@') {
-                fileReader.modifyContent(y, x, ' ');
+                fileReader.setCharAt(y, x, ' ');
             }
         }
     }

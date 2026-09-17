@@ -18,8 +18,7 @@ private:
 	bool isPlayerCaught(const Coordinates& playerCoordinates) const;
 	void showEndScreen(const std::string& pathToFile) const;
 
-	// TODO: try std::reference_wrapper?
-	std::vector<std::shared_ptr<Enemy>> enemies;
+	std::vector<std::unique_ptr<Enemy>> enemies;
 
 	Map map;
 };

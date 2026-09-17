@@ -109,30 +109,30 @@ void GameHandler::prepareEnemies()
 {
     enemies.clear();
 
-    int width = 0;
-    int height = 0;
+    int x = 0;
+    int y = 0;
 
     for (const std::string& line : map.getFileReader().getContent()) {
         for (const char& ch : line) {
             if (ch == '&') {
-                enemies.push_back(std::make_shared<SlowEnemy>(Coordinates(width, height)));
+                enemies.push_back(std::make_unique<SlowEnemy>(Coordinates(x, y)));
             }
             else if (ch == '^') {
-                enemies.push_back(std::make_shared<FastEnemy>(Coordinates(width, height)));
+                enemies.push_back(std::make_unique<FastEnemy>(Coordinates(x, y)));
             }
             else if (ch == '%') {
-                enemies.push_back(std::make_shared<FastestEnemy>(Coordinates(width, height)));
+                enemies.push_back(std::make_unique<FastestEnemy>(Coordinates(x, y)));
             }
-            width++;
+            x++;
         }
-        width = 0;
-        height++;
+        x = 0;
+        y++;
     }
 }
 
 void GameHandler::moveEnemies(const Coordinates& playerCoordinates)
 {
-    for (std::shared_ptr<Enemy>& enemy : enemies) {
+    for (const std::unique_ptr<Enemy>& enemy : enemies) {
         if (!enemy->shouldMove()) {
             continue;
         }
@@ -172,7 +172,7 @@ void GameHandler::moveEnemies(const Coordinates& playerCoordinates)
 
 bool GameHandler::isPlayerCaught(const Coordinates& playerCoordinates) const
 {
-    for (const std::shared_ptr<Enemy>& enemy : enemies) {
+    for (const std::unique_ptr<Enemy>& enemy : enemies) {
         if (enemy->getCoords() == playerCoordinates) {
             return true;
         }
