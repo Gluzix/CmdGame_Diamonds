@@ -22,7 +22,7 @@ void Punctation::show()
     COORD coord = { 48, static_cast<SHORT>(row) };
     SetConsoleCursorPosition(hOutput, coord);
     std::string punctationStr = ss.str();
-    WriteConsoleA(hOutput, punctationStr.c_str(), static_cast<DWORD>(punctationStr.length()), NULL, NULL);
+    WriteConsoleA(hOutput, punctationStr.c_str(), static_cast<DWORD>(punctationStr.length()), nullptr, nullptr);
 }
 
 int Punctation::get()

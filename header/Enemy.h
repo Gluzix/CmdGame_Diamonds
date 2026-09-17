@@ -14,7 +14,7 @@ public:
     void backToOldPosition();
     void tryToFollowPlayer(const Coordinates& playerCoordinates);
     bool isPlayerNear(const Coordinates& playerCoordinates);
-    void updateWay(Way way);
+    void updateWay(Way newWay);
     void reverseWay();
     bool hasMoved() const;
 

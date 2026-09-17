@@ -1,7 +1,7 @@
 #include "Map.h"
 #include "Console.h"
+#include <string>
 #include <windows.h>
-#include <stdlib.h>
 
 namespace
 {

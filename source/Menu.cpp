@@ -1,7 +1,7 @@
 #include "Menu.h"
+#include <cstdlib>
 #include <iostream>
-#include <fstream>
-#include <Windows.h>
+#include <string>
 
 void Menu::show(int index) const
 {

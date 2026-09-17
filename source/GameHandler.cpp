@@ -5,6 +5,7 @@
 #include "Punctation.h"
 #include "SlowEnemy.h"
 #include <conio.h>
+#include <cstdlib>
 #include <iostream>
 #include <Windows.h>
 
