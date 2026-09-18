@@ -2,10 +2,10 @@
 
 My first game made in C++ — a small maze game that runs in the Windows console.
 
-The game is a run of levels, one map each. Collect every diamond on the map, flip the lever
-to open the barriers, then walk out through `OUT` to go on to the next level; walking out of
-the last one finishes the game. Touch an enemy and that level starts again from the
-beginning.
+The game is a run of three levels, one map each: an easy warm-up, the original map, and a
+harder finale. Collect every diamond on the map, flip the lever to open the barriers, then
+walk out through `OUT` to go on to the next level; walking out of the last one finishes the
+game. Touch an enemy and that level starts again from the beginning.
 
 ## Map legend
 
@@ -151,7 +151,9 @@ file per line, played top to bottom.
 # The levels, in the order they are played: one board file per line. The files sit
 # in this folder, so write Map.txt, not resources/Map.txt. Anything after a # is
 # ignored, so a # at the start of a line takes that level out of the game.
+Warmup.txt
 Map.txt
+Finale.txt
 ```
 
 * Write the bare file name, `Map.txt`, not `resources/Map.txt`: the maps sit next to the
@@ -198,9 +200,10 @@ counts as a row and pushes the counter down.
 * The console is sized once, at startup, for the widest and the tallest listed map. A
   smaller map sits in its top-left corner.
 
-**Difficulty.** `Map.txt`, the original map, has 12 diamonds, 13 `&`, 5 `^` and 3 `%` in
-wide open halls. Keep the list in order of difficulty: a map played before it should be
-easier, one played after it harder. Ways to make a map harder: more `^`, `%` patrolling
+**Difficulty.** The list runs from easiest to hardest. `Warmup.txt` opens it with 7 diamonds,
+5 `&`, 1 `^` and 1 `%`; `Map.txt`, the original map, has 12 diamonds, 13 `&`, 5 `^` and 3 `%`
+in wide open halls; `Finale.txt` closes it with 16 diamonds, 12 `&`, 8 `^` and 6 `%`. A new
+map goes where it fits that order. Ways to make a map harder: more `^`, `%` patrolling
 columns the player has to cross, narrower corridors with fewer ways out, diamonds in dead
 ends near a chaser, and the lever far from the barriers it opens.
 
@@ -264,7 +267,7 @@ the lever in `Map.txt`, for example, gives:
 ```
 These levels cannot be played:
 
-Level 1, resources/Map.txt:
+Level 2, resources/Map.txt:
   - the lever ('S') cannot be reached from the start, so the barriers never open: line 2, column 49
   - 2 diamonds cannot be reached while the barriers are closed: line 3, column 7; line 3, column 49
   - the exit cannot be reached while the barriers are closed: line 2, column 2
