@@ -15,6 +15,13 @@ namespace
     constexpr int blockedEnemyRetries = 4;
 }
 
+// A copy: whoever starts the round keeps the board as it was read, so the next attempt at
+// this level starts from that and not from what this round did to it.
+GameHandler::GameHandler(const Map& board)
+    : map(board)
+{
+}
+
 void GameHandler::run()
 {
     map.drawMap();

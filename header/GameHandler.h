@@ -10,6 +10,8 @@
 class GameHandler
 {
 public:
+	explicit GameHandler(const Map& board);
+
 	void run();
 
 private:

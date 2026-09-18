@@ -17,6 +17,8 @@ namespace
     // the console has no reason to wrap or scroll while a round is on screen.
     constexpr int spareColumns = 1;
     constexpr int spareRows = 2;
+
+    constexpr char mapPath[] = "resources/Map.txt";
 }
 
 void Application::run()
@@ -25,7 +27,7 @@ void Application::run()
 
     // The board is drawn at fixed console coordinates, so the console has to be big enough
     // to hold it before anything is printed. The map is the largest thing the game shows.
-    const FileReader mapReader(mapFilePath);
+    const FileReader mapReader(mapPath);
     prepareConsole(mapReader.getWidth() + spareColumns, mapReader.getHeight() + spareRows);
 
     MenuHandler menuHandler;
@@ -35,7 +37,8 @@ void Application::run()
         GameStatus status = menuHandler.run();
 
         if (status == GameStatus::Start) {
-            GameHandler gameHandler;
+            const Map board(mapPath);
+            GameHandler gameHandler(board);
             gameHandler.run();
         }
         else if (status == GameStatus::About) {
