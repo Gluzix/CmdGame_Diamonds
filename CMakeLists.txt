@@ -23,6 +23,7 @@ set(DIAMONDS_SOURCES
     source/FileReader.cpp
     source/GameHandler.cpp
     source/Map.cpp
+    source/MapCheck.cpp
     source/Menu.cpp
     source/MenuHandler.cpp
     source/Player.cpp
@@ -40,6 +41,7 @@ set(DIAMONDS_HEADERS
     header/FileReader.h
     header/GameHandler.h
     header/Map.h
+    header/MapCheck.h
     header/Menu.h
     header/MenuHandler.h
     header/Player.h

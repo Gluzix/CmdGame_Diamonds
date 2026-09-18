@@ -11,6 +11,7 @@
 #include "Console.h"
 #include "FileReader.h"
 #include "Map.h"
+#include "MapCheck.h"
 #include "MenuHandler.h"
 #include "GameHandler.h"
 
@@ -137,13 +138,15 @@ namespace
 
     std::vector<std::string> findLevelProblems(const Map& board, const BoardSize& sizedFor)
     {
-        std::vector<std::string> problems;
+        std::vector<std::string> problems = findMapProblems(board);
         const int columns = board.getFileReader().getWidth();
         const int rows = board.getFileReader().getHeight();
 
         // The console was sized at startup from the boards as they were then, and a bigger
-        // board drawn into it would misalign every row.
-        if (columns > sizedFor.columns || rows > sizedFor.rows) {
+        // board drawn into it would misalign every row. Only a board the checker accepts is
+        // measured: a byte order mark or stray carriage returns make a broken one measure
+        // wider than it will be once fixed.
+        if (problems.empty() && (columns > sizedFor.columns || rows > sizedFor.rows)) {
             problems.push_back("it is " + std::to_string(columns) + " columns by " + std::to_string(rows)
                 + " rows now, bigger than the " + std::to_string(sizedFor.columns) + " by "
                 + std::to_string(sizedFor.rows)
