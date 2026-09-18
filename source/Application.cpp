@@ -2,7 +2,9 @@
 #include <conio.h>
 #include <cstdlib>
 #include <iostream>
+#include <string>
 #include <time.h>
+#include <vector>
 #include <Windows.h>
 #include "Console.h"
 #include "FileReader.h"
@@ -19,6 +21,22 @@ namespace
     constexpr int spareRows = 2;
 
     constexpr char mapPath[] = "resources/Map.txt";
+    constexpr char winScreenPath[] = "resources/Win.txt";
+    constexpr char loseScreenPath[] = "resources/Lose.txt";
+
+    void showScreen(const std::vector<std::string>& lines, const std::string& prompt)
+    {
+        system("cls");
+
+        for (const std::string& line : lines) {
+            std::cout << line << std::endl;
+        }
+
+        std::cout << std::endl << prompt << std::endl;
+
+        FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
+        _getch();
+    }
 }
 
 void Application::run()
@@ -39,7 +57,16 @@ void Application::run()
         if (status == GameStatus::Start) {
             const Map board(mapPath);
             GameHandler gameHandler(board);
-            gameHandler.run();
+            const RoundResult result = gameHandler.run();
+
+            if (result == RoundResult::Finished) {
+                const FileReader winScreen(winScreenPath);
+                showScreen(winScreen.getContent(), "Press any key to return to the menu...");
+            }
+            else if (result == RoundResult::Caught) {
+                const FileReader loseScreen(loseScreenPath);
+                showScreen(loseScreen.getContent(), "Press any key to return to the menu...");
+            }
         }
         else if (status == GameStatus::About) {
             system("cls");

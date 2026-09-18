@@ -4,9 +4,7 @@
 #include "Player.h"
 #include "Score.h"
 #include "SlowEnemy.h"
-#include <conio.h>
 #include <cstdlib>
-#include <iostream>
 #include <Windows.h>
 
 namespace
@@ -22,7 +20,7 @@ GameHandler::GameHandler(const Map& board)
 {
 }
 
-void GameHandler::run()
+RoundResult GameHandler::run()
 {
     map.drawMap();
     prepareEnemies();
@@ -39,12 +37,10 @@ void GameHandler::run()
 
     Player player(map.getPlayerCoords());
 
-    bool hasWon = false;
-
     while (true)
     {
         if (GetAsyncKeyState(VK_ESCAPE)) {
-            return;
+            return RoundResult::Quit;
         }
 
         // At the top of a frame the player's drawn cell and logical cell are the same, so
@@ -75,8 +71,7 @@ void GameHandler::run()
         const bool hasEveryDiamond = score.get() == map.getPoints();
 
         if (map.hasPlayerFinished(player.pos()) && hasEveryDiamond) {
-            hasWon = true;
-            break;
+            return RoundResult::Finished;
         }
 
         // The lever deliberately does NOT require every diamond: resources/Map.txt puts
@@ -97,19 +92,17 @@ void GameHandler::run()
         }
 
         if (isPlayerCaught(player.pos())) {
-            break;
+            return RoundResult::Caught;
         }
 
         moveEnemies(player.pos());
 
         if (isPlayerCaught(player.pos())) {
-            break;
+            return RoundResult::Caught;
         }
 
         Sleep(frameTimeMs);
     }
-
-    showEndScreen(hasWon ? "resources/Win.txt" : "resources/Lose.txt");
 }
 
 void GameHandler::prepareEnemies()
@@ -186,20 +179,4 @@ bool GameHandler::isPlayerCaught(const Coordinates& playerCoordinates) const
     }
 
     return false;
-}
-
-void GameHandler::showEndScreen(const std::string& pathToFile) const
-{
-    system("cls");
-
-    FileReader fileReader(pathToFile);
-
-    for (const std::string& line : fileReader.getContent()) {
-        std::cout << line << std::endl;
-    }
-
-    std::cout << std::endl << "Press any key to return to the menu..." << std::endl;
-
-    FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
-    _getch();
 }
