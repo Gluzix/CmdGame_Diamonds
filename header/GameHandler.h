@@ -17,7 +17,7 @@ enum class RoundResult {
 class GameHandler
 {
 public:
-	explicit GameHandler(const Map& board);
+	explicit GameHandler(const Map& board, int levelNumber, int levelCount);
 
 	RoundResult run();
 
@@ -29,4 +29,6 @@ private:
 	std::vector<std::unique_ptr<Enemy>> enemies;
 
 	Map map;
+	const int levelNumber;
+	const int levelCount;
 };

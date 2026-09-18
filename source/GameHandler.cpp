@@ -24,18 +24,35 @@ namespace
             GetAsyncKeyState(key);
         }
     }
+
+    // Written the way Score writes the counter, at the start of the same row.
+    void showLevel(int levelNumber, int levelCount, int row)
+    {
+        const std::string label = "Level " + std::to_string(levelNumber) + "/" + std::to_string(levelCount);
+        const HANDLE hOutput = GetStdHandle(STD_OUTPUT_HANDLE);
+        const COORD coord = { 0, static_cast<SHORT>(row) };
+
+        SetConsoleCursorPosition(hOutput, coord);
+        WriteConsoleA(hOutput, label.c_str(), static_cast<DWORD>(label.length()), nullptr, nullptr);
+    }
 }
 
 // A copy: whoever starts the round keeps the board as it was read, so the next attempt at
 // this level starts from that and not from what this round did to it.
-GameHandler::GameHandler(const Map& board)
+GameHandler::GameHandler(const Map& board, int levelNumber, int levelCount)
     : map(board)
+    , levelNumber(levelNumber)
+    , levelCount(levelCount)
 {
 }
 
 RoundResult GameHandler::run()
 {
     forgetEarlierKeyPresses();
+
+    // The screen before this round (the last level's board, or the lose screen) may still be
+    // up, and it may have been bigger than this board.
+    system("cls");
 
     map.drawMap();
     prepareEnemies();
@@ -49,6 +66,7 @@ RoundResult GameHandler::run()
 
     Score score(map.getPoints(), map.getFileReader().getHeight());
     score.show();
+    showLevel(levelNumber, levelCount, map.getFileReader().getHeight());
 
     Player player(map.getPlayerCoords());
 
