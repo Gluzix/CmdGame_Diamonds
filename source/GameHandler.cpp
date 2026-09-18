@@ -11,6 +11,19 @@ namespace
 {
     constexpr int frameTimeMs = 100;
     constexpr int blockedEnemyRetries = 4;
+
+    constexpr int roundKeys[] = { VK_ESCAPE, VK_UP, VK_DOWN, VK_LEFT, VK_RIGHT };
+
+    // GetAsyncKeyState() also reports a key pressed at any time since it was last asked about
+    // that key. Without this, a key pressed before the round (Esc in the menu, or on the screen
+    // after the last round) acts on the first frame, and Esc there gives the game up the
+    // moment the board appears.
+    void forgetEarlierKeyPresses()
+    {
+        for (const int key : roundKeys) {
+            GetAsyncKeyState(key);
+        }
+    }
 }
 
 // A copy: whoever starts the round keeps the board as it was read, so the next attempt at
@@ -22,6 +35,8 @@ GameHandler::GameHandler(const Map& board)
 
 RoundResult GameHandler::run()
 {
+    forgetEarlierKeyPresses();
+
     map.drawMap();
     prepareEnemies();
 
