@@ -30,6 +30,11 @@ namespace
     }
 }
 
+Map::Map(const std::string& pathToFile)
+    : fileReader(pathToFile)
+{
+}
+
 void Map::drawMap()
 {
     int x = 0;

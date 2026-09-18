@@ -1,0 +1,6 @@
+# The levels, in the order they are played: one board file per line. The files sit
+# in this folder, so write Map.txt, not resources/Map.txt. Anything after a # is
+# ignored, so a # at the start of a line takes that level out of the game.
+Warmup.txt
+Map.txt
+Finale.txt

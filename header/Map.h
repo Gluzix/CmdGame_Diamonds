@@ -1,14 +1,15 @@
 #pragma once
 
+#include <string>
 #include <vector>
 #include <FileReader.h>
 #include "Coordinates.h"
 
-inline constexpr char mapFilePath[] = "resources/Map.txt";
-
 class Map
 {
     public:
+        explicit Map(const std::string& pathToFile);
+
         void drawMap();
         bool isObstacleForEnemy(const Coordinates& coords) const;
         bool isObstacleForPlayer(const Coordinates& coords) const;
@@ -36,5 +37,5 @@ private:
 
     int points{0};
 
-    FileReader fileReader{ mapFilePath };
+    FileReader fileReader;
 };

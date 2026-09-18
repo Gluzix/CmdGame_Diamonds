@@ -4,19 +4,56 @@
 #include "Player.h"
 #include "Score.h"
 #include "SlowEnemy.h"
-#include <conio.h>
 #include <cstdlib>
-#include <iostream>
 #include <Windows.h>
 
 namespace
 {
     constexpr int frameTimeMs = 100;
     constexpr int blockedEnemyRetries = 4;
+
+    constexpr int roundKeys[] = { VK_ESCAPE, VK_UP, VK_DOWN, VK_LEFT, VK_RIGHT };
+
+    // GetAsyncKeyState() also reports a key pressed at any time since it was last asked about
+    // that key. Without this, a key pressed before the round (Esc in the menu, or on the screen
+    // after the last round) acts on the first frame, and Esc there gives the game up the
+    // moment the board appears.
+    void forgetEarlierKeyPresses()
+    {
+        for (const int key : roundKeys) {
+            GetAsyncKeyState(key);
+        }
+    }
+
+    // Written the way Score writes the counter, at the start of the same row.
+    void showLevel(int levelNumber, int levelCount, int row)
+    {
+        const std::string label = "Level " + std::to_string(levelNumber) + "/" + std::to_string(levelCount);
+        const HANDLE hOutput = GetStdHandle(STD_OUTPUT_HANDLE);
+        const COORD coord = { 0, static_cast<SHORT>(row) };
+
+        SetConsoleCursorPosition(hOutput, coord);
+        WriteConsoleA(hOutput, label.c_str(), static_cast<DWORD>(label.length()), nullptr, nullptr);
+    }
 }
 
-void GameHandler::run()
+// A copy: whoever starts the round keeps the board as it was read, so the next attempt at
+// this level starts from that and not from what this round did to it.
+GameHandler::GameHandler(const Map& board, int levelNumber, int levelCount)
+    : map(board)
+    , levelNumber(levelNumber)
+    , levelCount(levelCount)
 {
+}
+
+RoundResult GameHandler::run()
+{
+    forgetEarlierKeyPresses();
+
+    // The screen before this round (the last level's board, or the lose screen) may still be
+    // up, and it may have been bigger than this board.
+    system("cls");
+
     map.drawMap();
     prepareEnemies();
 
@@ -29,15 +66,14 @@ void GameHandler::run()
 
     Score score(map.getPoints(), map.getFileReader().getHeight());
     score.show();
+    showLevel(levelNumber, levelCount, map.getFileReader().getHeight());
 
     Player player(map.getPlayerCoords());
-
-    bool hasWon = false;
 
     while (true)
     {
         if (GetAsyncKeyState(VK_ESCAPE)) {
-            return;
+            return RoundResult::Quit;
         }
 
         // At the top of a frame the player's drawn cell and logical cell are the same, so
@@ -68,8 +104,7 @@ void GameHandler::run()
         const bool hasEveryDiamond = score.get() == map.getPoints();
 
         if (map.hasPlayerFinished(player.pos()) && hasEveryDiamond) {
-            hasWon = true;
-            break;
+            return RoundResult::Finished;
         }
 
         // The lever deliberately does NOT require every diamond: resources/Map.txt puts
@@ -90,19 +125,17 @@ void GameHandler::run()
         }
 
         if (isPlayerCaught(player.pos())) {
-            break;
+            return RoundResult::Caught;
         }
 
         moveEnemies(player.pos());
 
         if (isPlayerCaught(player.pos())) {
-            break;
+            return RoundResult::Caught;
         }
 
         Sleep(frameTimeMs);
     }
-
-    showEndScreen(hasWon ? "resources/Win.txt" : "resources/Lose.txt");
 }
 
 void GameHandler::prepareEnemies()
@@ -179,20 +212,4 @@ bool GameHandler::isPlayerCaught(const Coordinates& playerCoordinates) const
     }
 
     return false;
-}
-
-void GameHandler::showEndScreen(const std::string& pathToFile) const
-{
-    system("cls");
-
-    FileReader fileReader(pathToFile);
-
-    for (const std::string& line : fileReader.getContent()) {
-        std::cout << line << std::endl;
-    }
-
-    std::cout << std::endl << "Press any key to return to the menu..." << std::endl;
-
-    FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
-    _getch();
 }

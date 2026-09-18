@@ -23,6 +23,7 @@ set(DIAMONDS_SOURCES
     source/FileReader.cpp
     source/GameHandler.cpp
     source/Map.cpp
+    source/MapCheck.cpp
     source/Menu.cpp
     source/MenuHandler.cpp
     source/Player.cpp
@@ -40,6 +41,7 @@ set(DIAMONDS_HEADERS
     header/FileReader.h
     header/GameHandler.h
     header/Map.h
+    header/MapCheck.h
     header/Menu.h
     header/MenuHandler.h
     header/Player.h
@@ -99,7 +101,7 @@ else()
     message(STATUS "Interprocedural optimization unavailable, Release will build without it: ${DIAMONDS_IPO_MESSAGE}")
 endif()
 
-# The game loads resources/... through relative paths, so the four text files
+# The game loads resources/... through relative paths, so the text files
 # have to sit next to the binary for every configuration.
 add_custom_command(TARGET Diamonds_CmdGame POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
