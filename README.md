@@ -156,6 +156,8 @@ Map.txt
 
 * Write the bare file name, `Map.txt`, not `resources/Map.txt`: the maps sit next to the
   list.
+* Keep file names to plain ASCII: letters, digits, `-`, `_` and `.`. The game cannot open a
+  name with a letter such as `Ł` in it, so it reports that line of the list by its number.
 * Blank lines are skipped and anything after a `#` is ignored, so a `#` at the start of a
   line takes that level out of the game without deleting its file.
 * A missing list, or one that names no levels, gets a screen of its own when you choose

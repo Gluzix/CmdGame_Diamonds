@@ -23,6 +23,10 @@ namespace
     constexpr int spareColumns = 1;
     constexpr int spareRows = 2;
 
+    // prepareConsole() never makes the console smaller than this, whatever it is asked for.
+    constexpr int smallestConsoleColumns = 124;
+    constexpr int smallestConsoleRows = 20;
+
     constexpr char levelListPath[] = "resources/Levels.txt";
     constexpr char levelFolder[] = "resources/";
     constexpr char winScreenPath[] = "resources/Win.txt";
@@ -40,6 +44,12 @@ namespace
     {
         int columns{ 0 };
         int rows{ 0 };
+    };
+
+    struct ListedLevel
+    {
+        int line{ 0 };
+        std::string path;
     };
 
     bool isAnyWatchedKeyDown()
@@ -91,11 +101,22 @@ namespace
         waitForAnyKey();
     }
 
-    std::vector<std::string> readLevelList()
+    bool isPlainAscii(const std::string& text)
+    {
+        for (const char ch : text) {
+            if (static_cast<unsigned char>(ch) >= 0x80) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    std::vector<ListedLevel> readLevelList()
     {
         const FileReader levelList(levelListPath);
         const std::vector<std::string>& lines = levelList.getContent();
-        std::vector<std::string> levelPaths;
+        std::vector<ListedLevel> listed;
 
         for (std::size_t index = 0; index < lines.size(); index++) {
             std::string name = lines[index].substr(0, lines[index].find('#'));
@@ -111,18 +132,23 @@ namespace
             }
 
             const std::size_t last = name.find_last_not_of(blanks);
-            levelPaths.push_back(levelFolder + name.substr(first, last - first + 1));
+            listed.push_back({ static_cast<int>(index) + 1, levelFolder + name.substr(first, last - first + 1) });
         }
 
-        return levelPaths;
+        return listed;
     }
 
-    BoardSize measureLargestBoard(const std::vector<std::string>& levelPaths)
+    BoardSize measureLargestBoard(const std::vector<ListedLevel>& listed)
     {
         BoardSize largest;
 
-        for (const std::string& path : levelPaths) {
-            const FileReader board(path);
+        for (const ListedLevel& level : listed) {
+            // Start reports such a name by its line in the list, and it is never played.
+            if (!isPlainAscii(level.path)) {
+                continue;
+            }
+
+            const FileReader board(level.path);
 
             if (board.getWidth() > largest.columns) {
                 largest.columns = board.getWidth();
@@ -156,6 +182,87 @@ namespace
         return problems;
     }
 
+    // A line exactly as wide as the console counts as two rows, which is what the classic
+    // console makes of it: it wraps as soon as the last column is written, and the line break
+    // then starts another row.
+    int rowsTakenBy(const std::string& line, int consoleColumns)
+    {
+        return static_cast<int>(line.size()) / consoleColumns + 1;
+    }
+
+    std::string moreLinesNote(std::size_t hiddenLines)
+    {
+        return "... and " + std::to_string(hiddenLines) + (hiddenLines == 1 ? " more line" : " more lines")
+            + ": fix these, then choose Start Game again to see the rest";
+    }
+
+    // The console keeps no rows beyond the ones prepareConsole() gave it, so a report taller than
+    // that would scroll its own title away before it could be read. The title, the advice and
+    // the prompt always stay, and the report between them is cut to what fits. It is rebuilt at
+    // every Start, so fixing what is shown brings the rest into view.
+    std::vector<std::string> reportScreen(std::vector<std::string> report, const BoardSize& sizedFor)
+    {
+        int consoleColumns = sizedFor.columns + spareColumns;
+        int consoleRows = sizedFor.rows + spareRows;
+
+        if (consoleColumns < smallestConsoleColumns) {
+            consoleColumns = smallestConsoleColumns;
+        }
+
+        if (consoleRows < smallestConsoleRows) {
+            consoleRows = smallestConsoleRows;
+        }
+
+        // Every level's entry ends in a blank line. The last one comes back below, just above
+        // the advice, whether or not the report is cut.
+        while (!report.empty() && report.back().empty()) {
+            report.pop_back();
+        }
+
+        const std::string advice = "Fix them, or put a # in front of their line in " + std::string(levelListPath) + ".";
+        std::vector<std::string> lines{ "These levels cannot be played:", "" };
+
+        // showScreen() adds a blank line and the prompt below these lines and leaves the caret
+        // on the row after the prompt, where one more line break would scroll the screen.
+        const int rowsForLines = consoleRows - 3;
+        const int fixedRows = 2 + 1 + rowsTakenBy(advice, consoleColumns);
+        int reportRows = 0;
+
+        for (const std::string& line : report) {
+            reportRows += rowsTakenBy(line, consoleColumns);
+        }
+
+        if (fixedRows + reportRows <= rowsForLines) {
+            lines.insert(lines.end(), report.begin(), report.end());
+        }
+        else {
+            const int budget = rowsForLines - fixedRows - rowsTakenBy(moreLinesNote(report.size()), consoleColumns);
+            std::size_t shown = 0;
+            int usedRows = 0;
+
+            while (shown < report.size() && usedRows + rowsTakenBy(report[shown], consoleColumns) <= budget) {
+                usedRows += rowsTakenBy(report[shown], consoleColumns);
+                lines.push_back(report[shown]);
+                shown++;
+            }
+
+            std::size_t hiddenLines = 0;
+
+            for (std::size_t index = shown; index < report.size(); index++) {
+                if (!report[index].empty()) {
+                    hiddenLines++;
+                }
+            }
+
+            lines.push_back(moreLinesNote(hiddenLines));
+        }
+
+        lines.push_back("");
+        lines.push_back(advice);
+
+        return lines;
+    }
+
     // The exit moves on to the next level, being caught replays the same one from the board as
     // it was read, and Esc gives the game up.
     void playLevels(const std::vector<Map>& levels)
@@ -168,6 +275,10 @@ namespace
             const RoundResult result = gameHandler.run();
 
             if (result == RoundResult::Quit) {
+                // Straight back to the menu, which flushes the console input once and then reads
+                // keys from it: an arrow still held as Esc went down would go on auto-repeating
+                // into it and move the selection.
+                waitUntilKeysReleased();
                 return;
             }
 
@@ -189,9 +300,9 @@ namespace
     // and never read the files again.
     void playCampaign(const BoardSize& sizedFor)
     {
-        const std::vector<std::string> levelPaths = readLevelList();
+        const std::vector<ListedLevel> listed = readLevelList();
 
-        if (levelPaths.empty()) {
+        if (listed.empty()) {
             const std::vector<std::string> lines{
                 std::string(levelListPath) + " is missing, or it names no levels.",
                 "It should name one board file per line, for example: Map.txt"
@@ -203,12 +314,27 @@ namespace
         std::vector<Map> levels;
         std::vector<std::string> report;
 
-        for (std::size_t index = 0; index < levelPaths.size(); index++) {
-            Map board(levelPaths[index]);
-            const std::vector<std::string> problems = findLevelProblems(board, sizedFor);
+        for (std::size_t index = 0; index < listed.size(); index++) {
+            const ListedLevel& level = listed[index];
+            std::string where = level.path;
+            std::vector<std::string> problems;
+
+            // A std::string path is opened in the ANSI code page, not as UTF-8, so a name with a
+            // letter outside ASCII, saved the way Notepad saves it, would be reported as a file
+            // that cannot be opened, under a garbled name. It is named by its line instead.
+            if (isPlainAscii(level.path)) {
+                Map board(level.path);
+                problems = findLevelProblems(board, sizedFor);
+                levels.push_back(std::move(board));
+            }
+            else {
+                where = "line " + std::to_string(level.line) + " of " + std::string(levelListPath);
+                problems.push_back("level file names must use plain ASCII letters, digits, '-', '_' and '.' "
+                                   "(rename the file and this line)");
+            }
 
             if (!problems.empty()) {
-                report.push_back("Level " + std::to_string(index + 1) + ", " + levelPaths[index] + ":");
+                report.push_back("Level " + std::to_string(index + 1) + ", " + where + ":");
 
                 for (const std::string& problem : problems) {
                     report.push_back("  - " + problem);
@@ -216,15 +342,10 @@ namespace
 
                 report.push_back("");
             }
-
-            levels.push_back(std::move(board));
         }
 
         if (!report.empty()) {
-            std::vector<std::string> lines{ "These levels cannot be played:", "" };
-            lines.insert(lines.end(), report.begin(), report.end());
-            lines.push_back("Fix them, or put a # in front of their line in " + std::string(levelListPath) + ".");
-            showScreen(lines, "Press any key to return to the menu...");
+            showScreen(reportScreen(report, sizedFor), "Press any key to return to the menu...");
             return;
         }
 
