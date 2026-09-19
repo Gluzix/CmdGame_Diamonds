@@ -24,6 +24,8 @@ namespace
             return FOREGROUND_INTENSITY;
         case '@':
             return FOREGROUND_GREEN | FOREGROUND_INTENSITY;
+        case 'S':
+            return FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY;
         default:
             return defaultColour;
         }
