@@ -15,7 +15,7 @@ game. Touch an enemy and that level starts again from the beginning.
 | `*` | a diamond — walk over it to pick it up |
 | `#` | a wall |
 | `$` | a barrier, closed until you flip the lever |
-| `S` | the lever that opens every barrier |
+| `S` | the lever that opens every barrier, drawn in yellow |
 | `OUT` | the exit |
 | `&` | slow enemy |
 | `^` | fast enemy |
@@ -187,6 +187,10 @@ counts as a row and pushes the counter down.
 * Each `O`, `U` and `T` is a working exit tile on its own, wherever it stands. Write the
   exit once, as `OUT` on one row, and use those letters for nothing else.
 * Each `S` is a working lever, and any of them opens every `$` on the map. Use one.
+* Keep the `S` clear of the barriers: no `$` may touch it, not even diagonally, and it
+  should sit in a spot of its own, so a player reads it as a switch to walk into and not as
+  one more piece of the gate. `Warmup.txt` once shipped with its lever stacked on top of the
+  barrier column, and on screen it read as part of the door.
 
 **Size and shape.** The game does not check these, but a map needs them:
 
